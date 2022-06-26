@@ -1,0 +1,4 @@
+#ifndef IMINSIM_LAUNCHER_H
+#define IMINSIM_LAUNCHER_H
+
+#endif

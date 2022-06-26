@@ -1,0 +1,10 @@
+.vscode/
+out/*
+sdk/*
+bin/*
+build/
+extern/install
+
+!extern/glew/**
+!extern/glfw/**
+!extern/glm/**
