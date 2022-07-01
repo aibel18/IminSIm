@@ -15,6 +15,7 @@ SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_SHARED_LIB -DIMINSIM_API_SHARED_
 
 IF "%DEBUG%" == "true" (
 	SET compilerFlags=!compilerFlags! -g
+	SET defines=!defines! -DLOG_DEBUG_ENABLED
 )
 
 ECHO "Building %assembly%%..."

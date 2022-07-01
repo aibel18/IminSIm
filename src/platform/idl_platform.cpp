@@ -1,6 +1,6 @@
 #include "idl_platform.h"
-#include <iostream>
+#include "idl_logger.h"
 
 using namespace idl;
 
-Platform::Platform() { std::cout << "Hello Platform\n"; }
+Platform::Platform() { LOG_INFO("Hello Platform") }
