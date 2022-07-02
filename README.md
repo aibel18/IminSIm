@@ -15,10 +15,14 @@ This SDK supports the physically-based simulation to build Immersive and Interac
 make down build
 ```
 
-### Build from scratch (.bat)
-- only Window | clang++ version 12.0.0 for x86_64-pc-windows-msvc
+### Build from scratch (.bat, .sh)
+- for Window | clang++ version 12.0.0 for x86_64-pc-windows-msvc
 ```
 build all
+```
+- for linux | clang++ version 10.0.0 for x86_64-pc-linux-gnu
+```
+./build.sh -a
 ```
 
 ## Features
