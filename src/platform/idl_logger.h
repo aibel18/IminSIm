@@ -17,7 +17,7 @@ namespace idl {
 		};
 
 		static constexpr const char* LevelLogString[4] = {"[ERROR]: ", "[WARN]:  ", "[INFO]:  ", "[DEBUG]: "};
-		static void log(LogLevel logLevel, const char* msm);
+		static void log(const char* logLevel, const char* msm);
 
 	public:
 		static void error(const char* msm, ...);

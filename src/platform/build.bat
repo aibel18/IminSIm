@@ -20,4 +20,4 @@ IF "%DEBUG%" == "true" (
 
 ECHO "Building %assembly%%..."
 
-clang++ %cFilenames% %compilerFlags% -o %out%/%assembly% %defines% %includeFlags% %linkerFlags%
+clang++ %cFilenames% %compilerFlags% -o %OUT%/%assembly% %defines% %includeFlags% %linkerFlags%
