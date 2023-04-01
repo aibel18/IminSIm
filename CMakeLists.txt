@@ -7,7 +7,7 @@
 # --------------------------------------------------------------
 cmake_minimum_required(VERSION 3.1)
 include(CMakeDependentOption)
-project("IminSim")
+project("Xsim")
 
 # Options
 option(USE_DOUBLE_PRECISION "Use double precision" OFF)
@@ -29,9 +29,9 @@ include(common)
 # add extern libraries
 
 # add own libraries
-add_subdirectory(src/platform)
-add_subdirectory(src/engine)
-add_subdirectory(src/launcher)
+add_subdirectory(platform)
+add_subdirectory(engine)
+add_subdirectory(launcher)
 
 # add demos
 if(BUILD_DEMOS)

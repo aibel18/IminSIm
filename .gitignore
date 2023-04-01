@@ -8,3 +8,4 @@ extern/install
 !extern/glew/**
 !extern/glfw/**
 !extern/glm/**
+!.vscode/c_cpp_properties.json

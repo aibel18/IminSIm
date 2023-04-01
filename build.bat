@@ -10,19 +10,19 @@ REM command list
 	GOTO :EOF
 
 :platform
-	PUSHD "src/platform"
+	PUSHD "platform"
 		CALL build.bat
 	POPD
 	GOTO :EOF
 
 :engine
-	PUSHD "src/engine"
+	PUSHD "engine"
 		CALL build.bat
 	POPD
 	GOTO :EOF
 
 :launcher
-	PUSHD "src/launcher"
+	PUSHD "launcher"
 		CALL build.bat
 	POPD
 	GOTO :EOF
@@ -45,6 +45,7 @@ REM main program
 	SET "Commands[0]=1"
 	SET /A "CommandIndex=0"
 	SET "DEBUG=false"
+	REM TODO: conflit with iostream library in debug mode 
 
 	if not EXIST "%OUT%" (
 		MKDIR "%OUT%"

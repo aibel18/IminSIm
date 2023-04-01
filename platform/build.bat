@@ -7,14 +7,15 @@ FOR /R %%f in (*.cpp) do (
     SET cFilenames=!cFilenames! %%f
 )
 
-SET assembly=launcher.exe
-SET compilerFlags=-Wvarargs -Wall -Werror
-SET includeFlags=-I. -I../platform/ -I../engine/
-SET linkerFlags=-L"%OUT%" -lplatform.lib -lengine.lib
-SET defines=-D_DEBUG -DIDL_API_SHARED_LIB -DIMINSIM_API_SHARED_LIB
+SET assembly=platform.dll
+SET compilerFlags=-shared -Wvarargs -Wall -Werror
+SET includeFlags=-Isrc
+SET linkerFlags=
+SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD
 
 IF "%DEBUG%" == "true" (
 	SET compilerFlags=!compilerFlags! -g
+	SET defines=!defines! -D_DEBUG -DLOG_DEBUG_ENABLED
 )
 
 ECHO "Building %assembly%%..."

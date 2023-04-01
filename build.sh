@@ -11,7 +11,7 @@ Verify()
 
 Platform()
 {
-	pushd "src/platform"
+	pushd "platform"
 		source build.sh
 	popd
 	Verify
@@ -19,7 +19,7 @@ Platform()
 
 Engine()
 {
-	pushd "src/engine"
+	pushd "engine"
 		source build.sh
 	popd
 	Verify
@@ -27,7 +27,7 @@ Engine()
 
 Launcher()
 {
-	pushd "src/launcher"
+	pushd "launcher"
 		source build.sh
 	popd
 	Verify

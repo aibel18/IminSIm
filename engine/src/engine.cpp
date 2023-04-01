@@ -1,10 +1,9 @@
-#include "iminsim_engine.h"
-#include <idl_logger.h>
+#include "engine.h"
+#include "logger.h"
 
-using namespace iminsim;
+using namespace xsim;
 
 Engine::Engine() {
-	idl::Platform platform;
 	LOG_INFO("Hello info")
 	LOG_WARN("hello warn")
 	LOG_ERROR("hello error")
