@@ -16,13 +16,12 @@ file(GLOB_RECURSE LAUNCHER_SOURCES src/*.cpp)
 add_executable(xsim_launcher ${LAUNCHER_SOURCES} ${LAUNCHER_HEADERS})
 
 # intern directories
-target_include_directories(xsim_launcher INTERFACE
+target_include_directories(xsim_launcher PRIVATE
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
 	$<INSTALL_INTERFACE:>/src
 )
 
 # extern libraries
-add_dependencies(xsim_launcher idl_platform xsim_engine)
 target_link_libraries(xsim_launcher PRIVATE idl_platform xsim_engine)
 
 if(BUILD_SHARED_LIBS)

@@ -7,7 +7,7 @@ down: ## clean project
 	@rm -rf sdk
 
 generate: ## generate project
-	@cmake -B build .
+	@cmake -B build . -DCMAKE_BUILD_TYPE=Release
 	
 build: ## build project
 	@cd $(WORKING_DIR)/build && make --no-print-directory

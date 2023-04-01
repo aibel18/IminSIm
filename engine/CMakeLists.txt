@@ -16,13 +16,12 @@ file(GLOB_RECURSE ENGINE_SOURCES src/*.cpp)
 add_library(xsim_engine ${ENGINE_SOURCES} ${ENGINE_HEADERS})
 
 # intern directories
-target_include_directories(xsim_engine INTERFACE
+target_include_directories(xsim_engine PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
 	$<INSTALL_INTERFACE:>/src
 )
 
 # extern libraries
-add_dependencies(xsim_engine idl_platform)
 target_link_libraries(xsim_engine PRIVATE idl_platform)
 
 if(BUILD_SHARED_LIBS)

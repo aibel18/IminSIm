@@ -14,7 +14,7 @@ REM command list
 	goto :eof
 
 :generate
-	call cmake -B build -G "NMake Makefiles" .
+	call cmake -B build -G "NMake Makefiles" . -DCMAKE_BUILD_TYPE=Release
 	goto :eof
 	
 :build
