@@ -1,4 +1,4 @@
-# IminSim
+# Xsim
 
 This SDK supports the physically-based simulation to build Immersive and Interaction Apps for cross-platforms.
 
@@ -12,8 +12,9 @@ This SDK supports the physically-based simulation to build Immersive and Interac
 - Windows 10 x64 | cl 19.29.30040 for x64
 - Linux 5.4.0-100-generic x86_64 | g++ 9.4.0 for x86_64-linux-gnu
 ```
-make down build
+make down generate build
 ```
+#### *Note: for windows use **vcvars64.bat** command previously*
 
 ### Build from scratch (.bat, .sh)
 - for Window | clang++ version 12.0.0 for x86_64-pc-windows-msvc
