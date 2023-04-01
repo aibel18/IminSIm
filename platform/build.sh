@@ -4,10 +4,10 @@ set echo on
 # Get a list of all the .c++ files.
 cFilenames=$(find . -type f -name "*.cpp")
 
-assembly="libplatform.so"
-compilerFlags="-shared -fdeclspec -fPIC -Wvarargs -Wall -Werror"
-includeFlags="-Isrc"
+assembly="libplatform"
+includeFlags="-I$WORKING_DIR/$assembly/src"
 linkerFlags=""
+compilerFlags="-shared -fdeclspec -fPIC -Wvarargs -Wall -Werror"
 defines="-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD"
 
 if [ $DEBUG == true ]
@@ -16,6 +16,6 @@ then
 	defines="$defines -D_DEBUG -DLOG_DEBUG_ENABLED"
 fi
 
-echo "Building $assembly..."
+echo "Building $assembly$EXT_LIB..."
 
-clang++ $cFilenames $compilerFlags -o $OUT/$assembly $defines $includeFlags $linkerFlags
+clang++ $cFilenames $compilerFlags -o $OUT/$assembly$EXT_LIB $defines $includeFlags $linkerFlags

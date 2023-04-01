@@ -5,9 +5,9 @@ set echo on
 cFilenames=$(find . -type f -name "*.cpp")
 
 assembly="launcher"
-compilerFlags="-fdeclspec -fPIC -Wvarargs -Wall -Werror"
-includeFlags="-Isrc -I../platform/src -I../engine/src"
+includeFlags="-I$WORKING_DIR/$assembly/src -I$WORKING_DIR//platform/src -I$WORKING_DIR/engine/src"
 linkerFlags="-L$OUT/ -lplatform -lengine -Wl,-rpath,$OUT/"
+compilerFlags="-fdeclspec -fPIC -Wvarargs -Wall -Werror"
 defines="-DIDL_API_SHARE -DXSIM_API_SHARE"
 
 if [ $DEBUG == true ]

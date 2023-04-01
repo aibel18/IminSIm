@@ -7,10 +7,10 @@ FOR /R %%f in (*.cpp) do (
     SET cFilenames=!cFilenames! %%f
 )
 
-SET assembly=launcher.exe
-SET compilerFlags=-Wvarargs -Wall -Werror
-SET includeFlags=-Isrc -I../platform/src -I../engine/src
+SET assembly=launcher
+SET includeFlags=-I%WORKING_DIR%/%assembly%/src -I%WORKING_DIR%/platform/src -I%WORKING_DIR%/engine/src
 SET linkerFlags=-L"%OUT%" -lplatform.lib -lengine.lib
+SET compilerFlags=-Wvarargs -Wall -Werror
 SET defines=-DIDL_API_SHARE -DXSIM_API_SHARE
 
 IF "%DEBUG%" == "true" (
@@ -18,6 +18,6 @@ IF "%DEBUG%" == "true" (
 	SET defines=!defines! -D_DEBUG -DLOG_DEBUG_ENABLED
 )
 
-ECHO "Building %assembly%%..."
+ECHO Building %assembly%.exe...
 
-clang++ %cFilenames% %compilerFlags% -o %OUT%/%assembly% %defines% %includeFlags% %linkerFlags%
+clang++ %cFilenames% %compilerFlags% -o %OUT%/%assembly%.exe %defines% %includeFlags% %linkerFlags%

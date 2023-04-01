@@ -42,13 +42,18 @@ REM main program
 :init
 	SET "WORKING_DIR=%~dp0"
 	SET OUT=%WORKING_DIR%sdk
+	SET BUILD=%WORKING_DIR%build
 	SET "Commands[0]=1"
 	SET /A "CommandIndex=0"
+	SET EXT_LIB=".dll"
 	SET "DEBUG=false"
 	REM TODO: conflit with iostream library in debug mode 
 
 	if not EXIST "%OUT%" (
 		MKDIR "%OUT%"
+	)
+	if not EXIST "%BUILD%" (
+		MKDIR "%BUILD%"
 	)
 
 :parse

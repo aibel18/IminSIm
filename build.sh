@@ -43,9 +43,12 @@ All()
 
 WORKING_DIR=$(pwd)
 OUT=$WORKING_DIR/sdk
+BUILD=$WORKING_DIR/build
+EXT_LIB=".so"
 DEBUG=false
 
 mkdir -p "$OUT"
+mkdir -p "$BUILD"
 
 while getopts :pela option;
 do
