@@ -11,7 +11,7 @@ SET assembly=launcher
 SET includeFlags=-I%WORKING_DIR%/%assembly%/src -I%WORKING_DIR%/platform/src -I%WORKING_DIR%/engine/src
 SET linkerFlags=-L"%OUT%" -lplatform.lib -lengine.lib
 SET compilerFlags=-Wvarargs -Wall -Werror
-SET defines=-DIDL_API_SHARE -DXSIM_API_SHARE
+SET defines=
 
 IF "%DEBUG%" == "true" (
 	SET compilerFlags=!compilerFlags! -g

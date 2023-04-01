@@ -45,7 +45,7 @@ REM main program
 	SET BUILD=%WORKING_DIR%build
 	SET "Commands[0]=1"
 	SET /A "CommandIndex=0"
-	SET EXT_LIB=".dll"
+	SET EXT_LIB=".lib"
 	SET "DEBUG=false"
 	REM TODO: conflit with iostream library in debug mode 
 

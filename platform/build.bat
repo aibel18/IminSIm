@@ -10,8 +10,8 @@ FOR /R %%f in (*.cpp) do (
 SET assembly=platform
 SET includeFlags=-I%WORKING_DIR%/%assembly%/src
 SET linkerFlags=
-SET compilerFlags=-shared -Wvarargs -Wall -Werror
-SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD
+SET compilerFlags=-c -Wvarargs -Wall -Werror
+SET defines=-D_CRT_SECURE_NO_WARNINGS
 
 IF "%DEBUG%" == "true" (
 	SET compilerFlags=!compilerFlags! -g
@@ -20,4 +20,11 @@ IF "%DEBUG%" == "true" (
 
 ECHO Building %assembly%%EXT_LIB%...
 
-clang++ %cFilenames% %compilerFlags% -o %OUT%/%assembly%%EXT_LIB% %defines% %includeFlags% %linkerFlags%
+@REM clang++ %cFilenames% %compilerFlags% -o %OUT%/%assembly%%EXT_LIB% %defines% %includeFlags% %linkerFlags%
+
+if not EXIST "%BUILD%/%assembly%" (
+	MKDIR "%BUILD%/%assembly%"
+)
+CD %BUILD%/%assembly%
+clang++ %cFilenames% %compilerFlags% %defines% %includeFlags%
+llvm-ar rc %OUT%/%assembly%%EXT_LIB% %BUILD%/%assembly%/*.o
