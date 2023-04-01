@@ -3,13 +3,17 @@ goto :init
 
 REM command list
 :help
-	echo down    		    		clean and create folders to build
+	echo down    		    		clean project
+	echo generate    		    generate project
 	echo build              build project
 	goto :eof
 
 :down
 	call rm -r build
 	call rm -r sdk
+	goto :eof
+
+:generate
 	call cmake -B build -G "NMake Makefiles" .
 	goto :eof
 	

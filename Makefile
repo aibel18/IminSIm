@@ -2,9 +2,11 @@ WORKING_DIR			?= $(shell pwd)
 
 .DEFAULT_GOAL := help
 
-down: ## clean and create folders to build
+down: ## clean project
 	@rm -rf build
 	@rm -rf sdk
+
+generate: ## generate project
 	@cmake -B build .
 	
 build: ## build project
