@@ -1,7 +1,7 @@
 #ifndef IDL_LOG_H
 #define IDL_LOG_H
 
-#include "defines.h"
+#include "idl_defines.h"
 
 namespace idl {
 
