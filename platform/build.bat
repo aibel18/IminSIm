@@ -9,7 +9,7 @@ FOR /R %%f in (*.cpp) do (
 
 SET assembly=platform
 SET includeFlags=-I%WORKING_DIR%/%assembly%/src
-SET linkerFlags=
+SET linkerFlags=-luser32
 SET compilerFlags=-shared -Wvarargs -Wall -Werror
 SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD
 

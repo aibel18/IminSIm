@@ -1,8 +1,13 @@
 #include <engine.h>
+#include <window.h>
+
+using namespace xsim;
 
 int main() {
 
-	xsim::Engine e;
+	Engine e;
+	Window w("XSim Launcher");
+	w.run();
 
 	return 0;
 }
