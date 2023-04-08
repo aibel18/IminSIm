@@ -5,7 +5,7 @@
 
 namespace idl {
 
-	IDL_API void console_write(const char* message);
+	IDL_API void console_write(const char* message, int size, int level);
 
 }  // namespace idl
 #endif

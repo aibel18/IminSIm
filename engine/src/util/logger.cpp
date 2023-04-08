@@ -3,10 +3,11 @@
 
 const char* LevelLogString[4] = {"[ERROR]: ", "[WARN ]: ", "[INFO ]: ", "[DEBUG]: "};
 
-xsim::Logger::Logger(LogLevel logLevel) {
+xsim::Logger::Logger(LogLevel logLevel) : level(logLevel) {
 	message << LevelLogString[logLevel];
 }
 
 xsim::Logger::~Logger() {
-	idl::console_write(message.str().c_str());
+	auto msg = message.str();
+	idl::console_write(msg.c_str(), msg.size(), level);
 }

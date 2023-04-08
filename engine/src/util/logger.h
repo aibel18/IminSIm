@@ -18,6 +18,7 @@ namespace xsim {
 
 	private:
 		std::ostringstream message;
+		LogLevel level;
 
 	public:
 		Logger(LogLevel logLevel = LogLevel::INFO);
