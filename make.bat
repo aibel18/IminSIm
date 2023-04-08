@@ -6,6 +6,7 @@ REM command list
 	echo down    		    		clean project
 	echo generate    		    generate project
 	echo build              build project
+	echo rebuild            rebuild project
 	goto :eof
 
 :down
@@ -20,6 +21,11 @@ REM command list
 :build
 	call cd "%WORKING_DIR%build"
 	call nmake
+	goto :eof
+
+:rebuild
+	call cd "%WORKING_DIR%build"
+	call nmake rebuild_cache
 	goto :eof
 
 REM main program

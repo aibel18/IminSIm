@@ -14,7 +14,7 @@ SET compilerFlags=-shared -Wvarargs -Wall -Werror
 SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD
 
 IF "%DEBUG%" == "true" (
-	SET compilerFlags=!compilerFlags! -g
+	SET compilerFlags=!compilerFlags! -g -llibcmtd -Xlinker /NODEFAULTLIB:libcmt
 	SET defines=!defines! -D_DEBUG -DLOG_DEBUG_ENABLED
 )
 

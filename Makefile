@@ -12,6 +12,9 @@ generate: ## generate project
 build: ## build project
 	@cd $(WORKING_DIR)/build && make --no-print-directory
 
+rebuild: ## rebuild project
+	@cd $(WORKING_DIR)/build && make rebuild_cache --no-print-directory
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 

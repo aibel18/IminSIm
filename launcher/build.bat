@@ -14,7 +14,7 @@ SET compilerFlags=-Wvarargs -Wall -Werror
 SET defines=-DIDL_API_SHARE -DXSIM_API_SHARE
 
 IF "%DEBUG%" == "true" (
-	SET compilerFlags=!compilerFlags! -g
+	SET compilerFlags=!compilerFlags! -g -llibcmtd -Xlinker /NODEFAULTLIB:libcmt
 	SET defines=!defines! -D_DEBUG -DLOG_DEBUG_ENABLED
 )
 

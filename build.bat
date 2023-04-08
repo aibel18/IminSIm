@@ -47,7 +47,6 @@ REM main program
 	SET /A "CommandIndex=0"
 	SET EXT_LIB=".dll"
 	SET "DEBUG=false"
-	REM TODO: conflit with iostream library in debug mode 
 
 	if not EXIST "%OUT%" (
 		MKDIR "%OUT%"
