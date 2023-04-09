@@ -11,25 +11,25 @@ Verify()
 
 Platform()
 {
-	pushd "platform"
+	pushd "platform" > /dev/null
 		source build.sh
-	popd
+	popd > /dev/null
 	Verify
 }
 
 Engine()
 {
-	pushd "engine"
+	pushd "engine" > /dev/null
 		source build.sh
-	popd
+	popd > /dev/null
 	Verify
 }
 
 Launcher()
 {
-	pushd "launcher"
+	pushd "launcher" > /dev/null
 		source build.sh
-	popd
+	popd > /dev/null
 	Verify
 }
 
