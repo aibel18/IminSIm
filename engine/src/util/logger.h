@@ -40,7 +40,12 @@ namespace xsim {
 #ifdef LOG_DEBUG_ENABLED
 	#define LOG_DEBUG xsim::Logger(LogLevel::DEBUG)
 #else
-	#define LOG_DEBUG / ## /
+	// TODO: enable log for debug & improve logger
+	#if IDL_WINDOWS_PLATFORM
+		#define LOG_DEBUG / ## /
+	#else
+		#define LOG_DEBUG xsim::Logger(LogLevel::DEBUG)
+	#endif
 #endif
 
 }  // namespace xsim
