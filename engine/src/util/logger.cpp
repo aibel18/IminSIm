@@ -1,13 +1,11 @@
 #include "logger.h"
-#include <idl_log.h>
 
-const char* LevelLogString[4] = {"[ERROR]: ", "[WARN ]: ", "[INFO ]: ", "[DEBUG]: "};
+const char* xsim::LogLevelString[4] = {"[ERROR]: ", "[WARN ]: ", "[INFO ]: ", "[DEBUG]: "};
+xsim::Logger xsim::logger;
 
-xsim::Logger::Logger(LogLevel logLevel) : level(logLevel) {
-	message << LevelLogString[logLevel];
+xsim::Logger::Logger() {
 }
 
-xsim::Logger::~Logger() {
-	auto msg = message.str();
-	idl::console_write(msg.c_str(), msg.size(), level);
+void xsim::Logger::write(LogLevel level, const char *line, int size) {
+	idl::console_write(line, size, level);
 }
