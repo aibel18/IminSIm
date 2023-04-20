@@ -6,9 +6,11 @@
 
 namespace idl {
 
-	struct idl_window final{
-		HINSTANCE instance;
-		HWND handle;
+	struct idl_window final {
+		HINSTANCE instance;  // application
+		HWND handle;         // handle of window
+		HDC dc;              // handle of device
+		HGLRC context;       // graphic context
 		bool close = false;
 	};
 
