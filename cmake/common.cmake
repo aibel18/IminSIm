@@ -1,5 +1,4 @@
 message(STATUS "Project name: ${PROJECT_NAME}")
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 if(BUILD_SHARED_LIBS)
 	message(STATUS "Library Type: Dynamic library")
@@ -55,11 +54,12 @@ endif(APPLE)
 
 add_definitions(-D_CRT_SECURE_NO_DEPRECATE)
 
-set(EXT_CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
-
-if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-	set(EXT_CMAKE_BUILD_TYPE "Release")
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE "Release")
 endif()
+
+set(EXT_CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # use double precision
 if(USE_DOUBLE_PRECISION)

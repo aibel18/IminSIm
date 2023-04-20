@@ -28,3 +28,7 @@ if(BUILD_SHARED_LIBS)
 	target_compile_definitions(xsim_launcher PRIVATE XSIM_API_SHARE)
 	target_compile_definitions(xsim_launcher PRIVATE IDL_API_SHARE)
 endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_compile_definitions(xsim_launcher PRIVATE _DEBUG LOG_DEBUG_ENABLED)
+endif()
