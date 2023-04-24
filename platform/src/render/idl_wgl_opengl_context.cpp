@@ -3,9 +3,8 @@
 #if IDL_WINDOWS_PLATFORM
 
 #include "win32/idl_window_win32.h"
-#include "GL/glcorearb.h"
+#include "idl_opengl.h"
 #include "GL/wglext.h"
-#include <gl/GL.h>
 
 PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB;
 PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
@@ -143,6 +142,8 @@ bool idl::OpenGLContext::init(int minor, int major, u8 color, u8 depth) {
 	};
 
 	memcpy(wglContextAttribs, contextAttribs, sizeof(contextAttribs));
+
+	load_custom_openGL();
 
 	initialized = true;
 

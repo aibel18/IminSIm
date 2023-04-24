@@ -7,7 +7,7 @@
 
 namespace xsim {
 
-	extern const char *LogLevelString[4];
+	extern const char *LogLevelString[4]; // TODO: add XSIM_API to export
 	enum LogLevel { ERROR = 0, WARN, INFO, DEBUG };
 
 	class XSIM_API Logger {
@@ -38,7 +38,7 @@ namespace xsim {
 		}
 	};
 	
-	extern Logger logger;
+	extern Logger logger; // TODO: add XSIM_API to export
 
 #define LOG_ERROR(msm, ...) xsim::logger.log(xsim::LogLevel::ERROR, msm, ##__VA_ARGS__)
 #define LOG_WARN(msm, ...)  xsim::logger.log(xsim::LogLevel::WARN, msm, ##__VA_ARGS__)
