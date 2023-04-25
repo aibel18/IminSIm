@@ -13,3 +13,8 @@
 
 ### Other Implementations
 - **mesa3d**: implementation of OpenGL/ OpenGL ES/ Vulkan and others
+
+## debug with visual studio
+```
+devenv /debugexe sdk\launcher.exe
+```

@@ -13,7 +13,7 @@ set(PLATFORM_INCLUDES)
 set(PLATFORM_LIBS)
 
 if(WIN32)
-	list(APPEND PLATFORM_LIBS "-luser32")
+	list(APPEND PLATFORM_LIBS user32.lib gdi32.lib openGL32.lib)
 	message(STATUS "Using Win32 for window creation")
 elseif(UNIX)
 	list(APPEND PLATFORM_LIBS "-lX11")
