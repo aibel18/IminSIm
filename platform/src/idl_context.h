@@ -29,7 +29,7 @@ namespace idl {
 		GraphicRender type;
 		bool initialized = false;
 		ContextInfo info;
-		Render render;
+		Render *render;
 
 	public:
 		Context(GraphicRender type);

@@ -3,7 +3,8 @@
 #if IDL_WINDOWS_PLATFORM
 
 #include "win32/idl_window_win32.h"
-#include "idl_opengl.h"
+#include "idl_render_opengl.h"
+#include "GL/glcorearb.h"
 #include "GL/wglext.h"
 
 PFNWGLGETEXTENSIONSSTRINGARBPROC wglGetExtensionsStringARB;
@@ -143,7 +144,7 @@ bool idl::OpenGLContext::init(int minor, int major, u8 color, u8 depth) {
 
 	memcpy(wglContextAttribs, contextAttribs, sizeof(contextAttribs));
 
-	load_custom_openGL();
+	render = new RenderOpenGL();
 
 	initialized = true;
 
@@ -180,11 +181,8 @@ bool idl::OpenGLContext::makeCurrent(idl_window *window) {
 		return false;
 	}
 
-	info.renderer = glGetString(GL_RENDERER);
-	info.version = glGetString(GL_VERSION);
-	info.glsl = glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-	glClearColor(0.392f, 0.584f, 0.929f, 1.f);
+	render->getInfo(info.renderer, info.version, info.glsl);
+	render->setColor(0.392f, 0.584f, 0.929f);
 	swapBuffers(window);
 
 	return true;
@@ -194,7 +192,7 @@ bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 	
 	IS_OPENGL_INIT
 	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	render->clear();
 	SwapBuffers(window->dc);
 	return true;
 }

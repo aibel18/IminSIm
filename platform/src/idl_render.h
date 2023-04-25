@@ -6,7 +6,11 @@
 namespace idl {
 
 	struct IDL_API Render {
-		void drawLine();
+		virtual ~Render() {};
+		virtual void setColor(float r, float g, float v) = 0;
+		virtual void clear() = 0;
+		virtual void getInfo(const u8*& renderer, const u8*& version, const u8*& glsl) = 0;
+		virtual void drawLine() = 0;
 	};
 }  // namespace idl
 #endif

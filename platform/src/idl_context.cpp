@@ -5,6 +5,9 @@ idl::Context::Context(GraphicRender type) : type(type) {
 }
 
 idl::Context::~Context() {
+	if (!render)
+		return;
+	delete render;
 }
 
 idl::Context* idl::create_context(GraphicRender graphicContext) {
