@@ -10,6 +10,10 @@ idl::Context::~Context() {
 	delete render;
 }
 
+idl::Render* idl::Context::getRender() {
+	return render;
+}
+
 idl::Context* idl::create_context(GraphicRender graphicContext) {
 
 	switch (graphicContext) {

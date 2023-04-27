@@ -1,19 +1,17 @@
 #ifndef IDL_OPENGL_H
 #define IDL_OPENGL_H
 
-// Load all OpenGL functions
-#define GL_GLEXT_PROTOTYPES
-
+#include "idl_defines.h"
 #include "GL/glcorearb.h"
 
+#if defined(IDL_WINDOWS_PLATFORM)
+#include "GL/wglext.h"
+#else
+// other platforms
+#endif
+
 // Load only selected OpenGL functions
-#ifndef GL_GLEXT_PROTOTYPES
-
-#include "idl_defines.h"
-
-namespace idl {
-
-#define GL_FUNCTIONS(X)                                            \
+#define GL_FUNCTIONS                                               \
 	X(PFNGLCREATEBUFFERSPROC, glCreateBuffers)                       \
 	X(PFNGLNAMEDBUFFERSTORAGEPROC, glNamedBufferStorage)             \
 	X(PFNGLBINDVERTEXARRAYPROC, glBindVertexArray)                   \
@@ -37,31 +35,16 @@ namespace idl {
 	X(PFNGLDEBUGMESSAGECALLBACKPROC, glDebugMessageCallback)         \
 	X(PFNGLCLEARCOLORPROC, glClearColor)                             \
 	X(PFNGLGETSTRINGPROC, glGetString)                               \
-	X(PFNGLCLEARPROC, glClear)
+	X(PFNGLCLEARPROC, glClear)                                       \
+	X(PFNGLVIEWPORTPROC, glViewport)
 
-#define X(type, name) static type name;
-	GL_FUNCTIONS(X)
+#define X(type, name) extern type name;
+GL_FUNCTIONS
 #undef X
 
-	static void LoadGLFunctions() {
+namespace idl {
 
-#if defined(IDL_WINDOWS_PLATFORM)
-		HMODULE module = LoadLibraryA("OpenGL32.dll");
-#define X(type, name)                                                                                 \
-	name = (type)wglGetProcAddress(#name);                                                              \
-	if (name == 0 || name == (type)0x1 || name == (type)0x2 || name == (type)0x3 || name == (type)-1) { \
-		name = (type)GetProcAddress(module, #name);                                                       \
-	}
-#else
-#define X(type, name)
-#endif
-		GL_FUNCTIONS(X)
-#undef X
-	}
+	void load_opengl_functions();
 
 }  // namespace idl
-#endif
-
-#undef GL_GLEXT_PROTOTYPES
-
 #endif
