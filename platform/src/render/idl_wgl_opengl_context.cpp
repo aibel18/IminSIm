@@ -237,8 +237,6 @@ bool idl::OpenGLContext::swapInterval() {
 bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 
 	IS_OPENGL_INIT
-	wglMakeCurrent(window->dc, window->context);
-	render->clear();
 	SwapBuffers(window->dc);
 	return true;
 }

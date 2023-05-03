@@ -11,6 +11,7 @@ namespace idl {
 		virtual void setViewPort(int width, int height) = 0;
 		virtual void clear() = 0;
 		virtual void getInfo(const u8*& renderer, const u8*& version, const u8*& glsl) = 0;
+		virtual void drawTriangle() = 0;
 	};
 }  // namespace idl
 #endif

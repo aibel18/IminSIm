@@ -36,7 +36,15 @@
 	X(PFNGLCLEARCOLORPROC, glClearColor)                             \
 	X(PFNGLGETSTRINGPROC, glGetString)                               \
 	X(PFNGLCLEARPROC, glClear)                                       \
-	X(PFNGLVIEWPORTPROC, glViewport)
+	X(PFNGLVIEWPORTPROC, glViewport)                                 \
+	X(PFNGLGENVERTEXARRAYSPROC, glGenVertexArrays)                   \
+	X(PFNGLGENBUFFERSPROC, glGenBuffers)                             \
+	X(PFNGLBINDBUFFERPROC, glBindBuffer)                             \
+	X(PFNGLBUFFERDATAPROC, glBufferData)                             \
+	X(PFNGLENABLEVERTEXATTRIBARRAYPROC, glEnableVertexAttribArray)   \
+	X(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray) \
+	X(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer)           \
+	X(PFNGLDRAWARRAYSPROC, glDrawArrays)
 
 #define X(type, name) extern type name;
 GL_FUNCTIONS

@@ -12,6 +12,7 @@ namespace xsim {
 		idl::idl_window* handle;
 
 	private:
+		const char* name;
 		int width;
 		int height;
 
