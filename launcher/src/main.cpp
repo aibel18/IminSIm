@@ -1,13 +1,13 @@
-#include <engine.h>
-#include <window.h>
+#include <core/Application.h>
 
 using namespace xsim;
 
 int main() {
 
-	Engine e;
-	Window w("XSim Launcher");
-	w.run();
+	ApplicationConfig config{"XSim Launcher", 1280, 720};
+	Application app;
+	app.create(&config);
+	app.run();
 
 	return 0;
 }

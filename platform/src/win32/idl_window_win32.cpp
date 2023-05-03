@@ -66,6 +66,7 @@ idl::idl_window *idl::create_window(const char *name, int width, int height) {
 	return window;
 }
 
+// TODO: unified is_closed and process_events in one method
 void idl::process_events(idl_window *window) {
 	MSG msg;
 	while (PeekMessageA(&msg, window->handle, 0, 0, PM_REMOVE)) {
