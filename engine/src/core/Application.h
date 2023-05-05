@@ -2,17 +2,17 @@
 #define XSIM_APPLICATION_H
 
 #include "defines.h"
-#include "ApplicationConfig.h"
+#include "GameBase.h"
 
 namespace xsim {
 
 	class XSIM_API Application {
 	private:
-		ApplicationConfig *config;
+		GameBase* game;
 
 	public:
-		Application();
-		bool create(ApplicationConfig *config);
+		Application(GameBase* game);
+		bool create();
 		bool run();
 	};
 }  // namespace xsim
