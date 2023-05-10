@@ -35,7 +35,8 @@ void xsim::Window::run() {
 		render->clear();
 		render->drawTriangle();
 
-		context->swapInterval();
+		context->swapInterval(handle);
 		context->swapBuffers(handle);
 	}
+	context->destroyCurrent(handle);
 }
