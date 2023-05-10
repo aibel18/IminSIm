@@ -241,6 +241,15 @@ bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 	return true;
 }
 
+bool idl::OpenGLContext::destroyCurrent(idl_window *window) {
+	if (window->context) {
+		wglMakeCurrent(window->dc, NULL);
+		wglDeleteContext(window->context);
+	}
+	window->context = 0;
+	return true;
+}
+
 idl::ContextInfo idl::OpenGLContext::getInfo() {
 	return info;
 }

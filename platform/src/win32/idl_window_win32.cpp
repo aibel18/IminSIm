@@ -84,10 +84,6 @@ void idl::destroy_window(idl_window *window) {
 	if (!window)
 		return;
 
-	if (window->context) {
-		wglMakeCurrent(window->dc, NULL);
-		wglDeleteContext(window->context);
-	}
 	if (window->dc)
 		ReleaseDC(window->handle, window->dc);
 

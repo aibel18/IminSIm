@@ -5,6 +5,7 @@
 #include "GL/glcorearb.h"
 
 #if defined(IDL_WINDOWS_PLATFORM)
+#include <gl/GL.h>
 #include "GL/wglext.h"
 #elif defined(IDL_LINUX_PLATFORM)
 #include <GL/glx.h>
