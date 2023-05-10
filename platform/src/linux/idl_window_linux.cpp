@@ -71,9 +71,14 @@ void idl::process_events(idl_window* window) {
 	}
 }
 
-void idl::destroy_window(idl_window* idlWindow) {
-	XDestroyWindow(idlWindow->display, idlWindow->window);
-	XCloseDisplay(idlWindow->display);
+void idl::destroy_window(idl_window* window) {
+	if (!window)
+		return;
+	if (window->display) {
+		XDestroyWindow(window->display, window->window);
+		XCloseDisplay(window->display);
+	}
+	delete window;
 }
 
 bool idl::is_closed(idl_window* window) {

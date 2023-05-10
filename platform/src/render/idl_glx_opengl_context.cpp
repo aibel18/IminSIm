@@ -207,8 +207,11 @@ bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 }
 
 bool idl::OpenGLContext::destroyCurrent(idl_window *window) {
-	glXMakeCurrent(window->display, 0, 0);
-	glXDestroyContext(window->display, (GLXContext)window->context);
+	if (window->context) {
+		glXMakeCurrent(window->display, 0, 0);
+		glXDestroyContext(window->display, (GLXContext)window->context);
+	}
+	window->context = 0;
 	return true;
 }
 
