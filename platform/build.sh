@@ -6,8 +6,8 @@ cFilenames=$(find . -type f -name "*.cpp")
 
 assembly="platform"
 includeFlags="-I$WORKING_DIR/$assembly/src"
-linkerFlags="-lX11"
-compilerFlags="-shared -fdeclspec -fPIC -Wvarargs -Wall -Werror"
+linkerFlags="-lX11 -lGL"
+compilerFlags="-shared -fdeclspec -fPIC -Wvarargs"
 defines="-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD"
 
 if [ $DEBUG == true ]
