@@ -69,9 +69,11 @@ bool xsim::Application::run() {
 		game->update();
 		game->draw();
 
-		context->swapInterval();
+		context->swapInterval(window);
 		context->swapBuffers(window);
 	}
+
+	context->destroyCurrent(window);
 
 	destroy_window(window);
 	destroy_context(context);
