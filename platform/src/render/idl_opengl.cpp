@@ -13,6 +13,12 @@ void idl::load_opengl_functions() {
 	if (name == 0 || name == (type)0x1 || name == (type)0x2 || name == (type)0x3 || name == (type)-1) { \
 		name = (type)GetProcAddress(module, #name);                                                       \
 	}
+#elif defined(IDL_LINUX_PLATFORM)
+#define X(type, name)                                        \
+	name = (type)glXGetProcAddressARB((const GLubyte *)#name); \
+	if (name == 0) {                                           \
+		name = (type)glXGetProcAddress((const GLubyte *)#name);  \
+	}
 #else
 // other platforms
 #define X(type, name)
