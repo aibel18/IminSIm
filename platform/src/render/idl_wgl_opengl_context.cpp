@@ -24,16 +24,16 @@ WGL_FUNCTIONS
 		return false;      \
 	}
 
-bool idl::OpenGLContext::isWglFunctionsLoaded() {
+bool idl::OpenGLContext::isExtFunctionsLoaded() {
 	if (!wglChoosePixelFormatARB || !wglCreateContextAttribsARB || !wglSwapIntervalEXT) {
 		return false;
 	}
 	return true;
 }
 
-bool idl::OpenGLContext::loadWglFunctions(u8 colorBits, u8 depthBits) {
+bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
 
-	if (isWglFunctionsLoaded()) {
+	if (isExtFunctionsLoaded()) {
 		return true;
 	}
 
@@ -103,7 +103,7 @@ bool idl::OpenGLContext::loadWglFunctions(u8 colorBits, u8 depthBits) {
 	ReleaseDC(dummy, dc);
 	DestroyWindow(dummy);
 
-	if (!isWglFunctionsLoaded()) {
+	if (!isExtFunctionsLoaded()) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "OpenGL don't support WGL extensions!", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		return false;
@@ -117,7 +117,7 @@ idl::OpenGLContext::OpenGLContext() : Context(IDL_OPENGL) {
 
 bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 
-	if (!loadWglFunctions(color, depth)) {
+	if (!loadExtFunctions(color, depth)) {
 		initialized = false;
 		return false;
 	}
@@ -228,7 +228,7 @@ bool idl::OpenGLContext::makeCurrent(idl_window *window) {
 	return true;
 }
 
-bool idl::OpenGLContext::swapInterval() {
+bool idl::OpenGLContext::swapInterval(idl_window* window) {
 	BOOL vsync = TRUE;
 	wglSwapIntervalEXT(vsync ? 1 : 0);
 	return false;

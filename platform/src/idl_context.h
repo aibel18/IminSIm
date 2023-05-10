@@ -29,7 +29,7 @@ namespace idl {
 		GraphicRender type;
 		bool initialized = false;
 		ContextInfo info;
-		Render *render;
+		Render* render = 0;
 
 	public:
 		Context(GraphicRender type);
@@ -37,8 +37,9 @@ namespace idl {
 		Render* getRender();
 		virtual bool init(int major, int minor, u8 color = 32, u8 depth = 24) = 0;
 		virtual bool makeCurrent(idl_window* window) = 0;
-		virtual bool swapInterval() = 0;
+		virtual bool swapInterval(idl_window* window) = 0;
 		virtual bool swapBuffers(idl_window* window) = 0;
+		virtual bool destroyCurrent(idl_window* window) = 0;
 		virtual ContextInfo getInfo() = 0;
 	};
 
