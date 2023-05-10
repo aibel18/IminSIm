@@ -12,7 +12,7 @@ namespace idl {
 		Display* display;
 		Atom deleteMessage;
 		Window window;
-		GC gc;
+		void * context;
 		bool close = false;
 	};
 }  // namespace idl

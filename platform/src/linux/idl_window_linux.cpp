@@ -26,14 +26,6 @@ idl::idl_window* idl::create_window(const char* name, int width, int height) {
 	XSetStandardProperties(display, window, name, "", None, NULL, 0, NULL);
 	XSelectInput(display, window, ExposureMask | ButtonPressMask | KeyPressMask);
 
-	// context
-	GC gc = XCreateGC(display, window, 0, 0);
-	if (!gc) {
-		return NULL;
-	}
-	XSetBackground(display, gc, white);
-	XSetForeground(display, gc, black);
-
 	// custom close event
 	Atom deleteMessage = XInternAtom(display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(display, window, &deleteMessage, 1);
@@ -45,7 +37,6 @@ idl::idl_window* idl::create_window(const char* name, int width, int height) {
 	idl::idl_window* idlWindow = new idl::idl_window();
 	idlWindow->display = display;
 	idlWindow->window = window;
-	idlWindow->gc = gc;
 	idlWindow->deleteMessage = deleteMessage;
 
 	return idlWindow;
@@ -81,7 +72,6 @@ void idl::process_events(idl_window* window) {
 }
 
 void idl::destroy_window(idl_window* idlWindow) {
-	XFreeGC(idlWindow->display, idlWindow->gc);
 	XDestroyWindow(idlWindow->display, idlWindow->window);
 	XCloseDisplay(idlWindow->display);
 }

@@ -6,6 +6,9 @@
 
 #if defined(IDL_WINDOWS_PLATFORM)
 #include "GL/wglext.h"
+#elif defined(IDL_LINUX_PLATFORM)
+#include <GL/glx.h>
+#include "GL/glxext.h"
 #else
 // other platforms
 #endif
@@ -33,18 +36,13 @@
 	X(PFNGLTEXTURESTORAGE2DPROC, glTextureStorage2D)                 \
 	X(PFNGLTEXTURESUBIMAGE2DPROC, glTextureSubImage2D)               \
 	X(PFNGLDEBUGMESSAGECALLBACKPROC, glDebugMessageCallback)         \
-	X(PFNGLCLEARCOLORPROC, glClearColor)                             \
-	X(PFNGLGETSTRINGPROC, glGetString)                               \
-	X(PFNGLCLEARPROC, glClear)                                       \
-	X(PFNGLVIEWPORTPROC, glViewport)                                 \
 	X(PFNGLGENVERTEXARRAYSPROC, glGenVertexArrays)                   \
 	X(PFNGLGENBUFFERSPROC, glGenBuffers)                             \
 	X(PFNGLBINDBUFFERPROC, glBindBuffer)                             \
 	X(PFNGLBUFFERDATAPROC, glBufferData)                             \
 	X(PFNGLENABLEVERTEXATTRIBARRAYPROC, glEnableVertexAttribArray)   \
 	X(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray) \
-	X(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer)           \
-	X(PFNGLDRAWARRAYSPROC, glDrawArrays)
+	X(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer)           
 
 #define X(type, name) extern type name;
 GL_FUNCTIONS
