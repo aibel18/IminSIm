@@ -1,16 +1,13 @@
 #include "core/Application.h"
-#include "core/GameBase.h"
+#include "core/GameRegister.h"
 #include "util/logger.h"
 
 using namespace xsim;
 
-extern GameBase* CreateGame();
-extern void DestroyGame(GameBase* game);
-
 int main() {
 
 	// Request the game instance
-	GameBase* game = CreateGame();
+	GameBase* game = GameRegister::game;
 
 	if (!game) {
 		LOG_ERROR("Game was not created");
@@ -21,9 +18,6 @@ int main() {
 	if (app.create()) {
 		app.run();
 	}
-
-	// Request to destroy the game instance
-	DestroyGame(game);
 
 	return 0;
 }

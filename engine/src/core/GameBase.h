@@ -3,16 +3,19 @@
 
 #include "defines.h"
 #include "ApplicationConfig.h"
+#include "ContextConfig.h"
 #include <idl_render.h>
 
 namespace xsim {
 
 	class XSIM_API GameBase {
 	public:
-		ApplicationConfig config;
+		ApplicationConfig appConf;
+		ContextConfig contextConf;
 		idl::Render* render;
 
 	public:
+		GameBase();
 		virtual ~GameBase() = 0;
 
 	protected:
