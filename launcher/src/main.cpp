@@ -1,13 +1,16 @@
 #include <EntryBase.h>
 
-using namespace xsim;
-
 class MyGame : public GameBase {
+
 public:
 	MyGame() {
-		config.name = "Xsim Launcher";
-		config.width = 1280;
-		config.height = 720;
+		appConf.name = "Xsim Launcher";
+		appConf.width = 1280;
+		appConf.height = 720;
+
+		contextConf.type = idl::GraphicRender::IDL_OPENGL;
+		contextConf.major = 3;
+		contextConf.minor = 1;
 	}
 
 	void init() {
@@ -16,20 +19,14 @@ public:
 
 	void update() {
 	}
+
 	void draw() {
 		render->clear();
 		render->drawTriangle();
 	}
+
 	void onResize(int width, int height) {
 	}
 };
 
 MyGame myGame;
-
-GameBase* CreateGame() {
-	return &myGame;
-}
-
-void DestroyGame(GameBase* game) {
-	// delete game;
-}
