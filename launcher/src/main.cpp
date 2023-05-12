@@ -13,8 +13,26 @@ public:
 		contextConf.minor = 1;
 	}
 
+	u32 vao;
+	u32 vbo;
+	int size;
+	int numPoint = 3;
+	int count;
+
 	void init() {
-		render->setColor(0.392f, 0.584f, 0.929f);
+		float data[] = {
+		    -0.5f, 0.0f,  0.0f,
+		    -1.0f, -1.0f, 0.0f,
+		    1.0f, -1.0f, 0.0f,
+		    0.0f, 1.0f, 0.0f,
+		    -1.0f, 0.0f, 0.0f,
+		    0.0f, 0.0f, 0.0f
+		};
+
+		size = sizeof(data);
+		count = size / (numPoint * sizeof(float));
+		render->setClearColor(0.392f, 0.584f, 0.929f);
+		render->initSimpleDraw(vao, vbo, data, size, numPoint, false);
 	}
 
 	void update() {
@@ -22,7 +40,12 @@ public:
 
 	void draw() {
 		render->clear();
-		render->drawTriangle();
+		render->setColor(1.0f, 0.f, 0.f);
+		render->drawSimple(vao, count);
+	}
+
+	void end() {
+		render->endSimpleDraw(vao, vbo);
 	}
 
 	void onResize(int width, int height) {
