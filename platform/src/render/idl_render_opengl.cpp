@@ -25,7 +25,7 @@ void idl::RenderOpenGL::getInfo(const u8 *&renderer, const u8 *&version, const u
 	glsl = glGetString(GL_SHADING_LANGUAGE_VERSION);
 }
 
-void idl::RenderOpenGL::initSimpleDraw(u32 &vao, u32 &vbo, float *points, int size, int count, bool modo) {
+void idl::RenderOpenGL::initData(u32 &vao, u32 &vbo, float *data, int size_bytes, bool modo) {
 
 	// VAO
 	glGenVertexArrays(1, &vao);  // create VAO
@@ -35,15 +35,12 @@ void idl::RenderOpenGL::initSimpleDraw(u32 &vao, u32 &vbo, float *points, int si
 	glGenBuffers(1, &vbo);               // create VBO
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);  // bind VBO
 
-	if (modo)
-		glBufferData(GL_ARRAY_BUFFER, size, points, GL_DYNAMIC_DRAW);
-	else
-		glBufferData(GL_ARRAY_BUFFER, size, points, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, size_bytes, data, modo ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);  // enable attribute 0
 	glVertexAttribPointer(
 	    0,         // attribute 0.
-	    count,     // size
+	    3,				 // size of elements : default 3 elements for vec3
 	    GL_FLOAT,  // type
 	    GL_FALSE,  // normalized?
 	    0,         // stride
@@ -55,13 +52,13 @@ void idl::RenderOpenGL::initSimpleDraw(u32 &vao, u32 &vbo, float *points, int si
 	glBindVertexArray(0);              // unbind VAO
 }
 
-void idl::RenderOpenGL::updateSimpleDraw(u32 &vbo, float *points, int size) {
+void idl::RenderOpenGL::updateData(u32 &vbo, float *data, int size_bytes) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);  // bind VBO
-	glBufferSubData(GL_ARRAY_BUFFER, 0, size, points);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, size_bytes, data);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);  // unbind VBO
 }
 
-void idl::RenderOpenGL::drawSimple(u32 &vao, int count) {
+void idl::RenderOpenGL::drawData(u32 &vao, int count) {
 	glBindVertexArray(vao);  // bind VAO
 
 	glEnableVertexAttribArray(0);           // enable attribute 0.
@@ -71,7 +68,7 @@ void idl::RenderOpenGL::drawSimple(u32 &vao, int count) {
 	glBindVertexArray(0);  // unbind VAO
 }
 
-void idl::RenderOpenGL::endSimpleDraw(u32 &vao, u32 &vbo) {
+void idl::RenderOpenGL::endData(u32 &vao, u32 &vbo) {
 	glDeleteBuffers(1, &vbo);       // delete VBO
 	glDeleteVertexArrays(1, &vao);  // delete VAO
 }
