@@ -43,7 +43,10 @@
 	X(PFNGLBUFFERDATAPROC, glBufferData)                             \
 	X(PFNGLENABLEVERTEXATTRIBARRAYPROC, glEnableVertexAttribArray)   \
 	X(PFNGLDISABLEVERTEXATTRIBARRAYPROC, glDisableVertexAttribArray) \
-	X(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer)           
+	X(PFNGLVERTEXATTRIBPOINTERPROC, glVertexAttribPointer)           \
+	X(PFNGLDELETEBUFFERSPROC, glDeleteBuffers)                       \
+	X(PFNGLDELETEVERTEXARRAYSPROC, glDeleteVertexArrays)             \
+	X(PFNGLBUFFERSUBDATAPROC, glBufferSubData)
 
 #define X(type, name) extern type name;
 GL_FUNCTIONS

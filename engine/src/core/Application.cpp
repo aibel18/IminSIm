@@ -72,6 +72,8 @@ bool xsim::Application::run() {
 		context->swapBuffers(window);
 	}
 
+	game->end();
+
 	context->destroyCurrent(window);
 
 	destroy_window(window);

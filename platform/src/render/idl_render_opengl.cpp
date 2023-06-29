@@ -4,8 +4,11 @@
 idl::RenderOpenGL::RenderOpenGL() {
 	load_opengl_functions();
 }
-void idl::RenderOpenGL::setColor(float r, float g, float v) {
-	glClearColor(r, g, v, 1.f);
+void idl::RenderOpenGL::setClearColor(float r, float g, float v, float a) {
+	glClearColor(r, g, v, a);
+}
+void idl::RenderOpenGL::setColor(float r, float g, float v, float a) {
+	glColor4f(r, g, v, a);
 }
 
 void idl::RenderOpenGL::setViewPort(int width, int height) {
@@ -22,41 +25,50 @@ void idl::RenderOpenGL::getInfo(const u8 *&renderer, const u8 *&version, const u
 	glsl = glGetString(GL_SHADING_LANGUAGE_VERSION);
 }
 
-GLuint VertexArrayID;
-static const GLfloat g_vertex_buffer_data[] = {
-    -1.0f, -1.0f, 0.0f,
-    1.0f,  -1.0f, 0.0f,
-    0.0f, 1.0f, 0.0f,
-};
-bool once = false;
-GLuint vertexbuffer;
-void idl::RenderOpenGL::drawTriangle() {
-	if (!once) {
-		glGenVertexArrays(1, &VertexArrayID);
-		glBindVertexArray(VertexArrayID);
+void idl::RenderOpenGL::initData(u32 &vao, u32 &vbo, float *data, int size_bytes, bool modo) {
 
-		// This will identify our vertex buffer
-		// Generate 1 buffer, put the resulting identifier in vertexbuffer
-		glGenBuffers(1, &vertexbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		
-		// Give our vertices to OpenGL.
-		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-		once = true;
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(
-				0,         // attribute 0. No particular reason for 0, but must match the layout in the shader.
-				3,         // size
-				GL_FLOAT,  // type
-				GL_FALSE,  // normalized?
-				0,         // stride
-				(void *)0  // array buffer offset
-		);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-	}
-	glEnableVertexAttribArray(0);
+	// VAO
+	glGenVertexArrays(1, &vao);  // create VAO
+	glBindVertexArray(vao);      // bind VAO
 
-	// Draw the triangle !
-	glDrawArrays(GL_TRIANGLES, 0, 3);  // Starting from vertex 0; 3 vertices total -> 1 triangle
-	glDisableVertexAttribArray(0);
+	// VBO
+	glGenBuffers(1, &vbo);               // create VBO
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);  // bind VBO
+
+	glBufferData(GL_ARRAY_BUFFER, size_bytes, data, modo ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);  // enable attribute 0
+	glVertexAttribPointer(
+	    0,         // attribute 0.
+	    3,				 // size of elements : default 3 elements for vec3
+	    GL_FLOAT,  // type
+	    GL_FALSE,  // normalized?
+	    0,         // stride
+	    (void *)0  // array buffer offset
+	);
+	glDisableVertexAttribArray(0);  // disable attribute 0
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);  // unbind VBO
+	glBindVertexArray(0);              // unbind VAO
+}
+
+void idl::RenderOpenGL::updateData(u32 &vbo, float *data, int size_bytes) {
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);  // bind VBO
+	glBufferSubData(GL_ARRAY_BUFFER, 0, size_bytes, data);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);  // unbind VBO
+}
+
+void idl::RenderOpenGL::drawData(u32 &vao, int count) {
+	glBindVertexArray(vao);  // bind VAO
+
+	glEnableVertexAttribArray(0);           // enable attribute 0.
+	glDrawArrays(GL_LINE_STRIP, 0, count);  // Starting from vertex 0; count vertices total
+	glDisableVertexAttribArray(0);          // disable attribute 0.
+
+	glBindVertexArray(0);  // unbind VAO
+}
+
+void idl::RenderOpenGL::endData(u32 &vao, u32 &vbo) {
+	glDeleteBuffers(1, &vbo);       // delete VBO
+	glDeleteVertexArrays(1, &vao);  // delete VAO
 }

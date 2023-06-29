@@ -27,13 +27,12 @@ void xsim::Window::run() {
 	auto render = context->getRender();
 
 	context->makeCurrent(handle);
-	render->setColor(0.392f, 0.584f, 0.929f);
+	render->setClearColor(0.392f, 0.584f, 0.929f);
 
 	while (!idl::is_closed(handle)) {
 		idl::process_events(handle);
 
 		render->clear();
-		render->drawTriangle();
 
 		context->swapInterval(handle);
 		context->swapBuffers(handle);
