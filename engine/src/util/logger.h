@@ -2,14 +2,18 @@
 #define XSIM_LOGGER_H
 
 #include "defines.h"
-#include <string>
+#include <string.h>
+#include <stdio.h>
 #include <idl_log.h>
 
 namespace xsim {
 
+#define N 256
+
 	extern XSIM_API const char *LogLevelString[4];
 	enum LogLevel { ERROR = 0, WARN, INFO, DEBUG };
 
+	// TODO: improve log
 	class XSIM_API Logger {
 
 	public:
@@ -20,24 +24,16 @@ namespace xsim {
 		template <typename... Args>
 		inline void log(LogLevel level, const char *format, const Args &...args) {
 
-			auto line = std::string("%s").append(format);
+			char line[N] = "%s";
+			strcat_s(line, format);
 
-			char buffer[256];
-			int size = idl::Format(buffer, 256, line.c_str(), LogLevelString[level], args...);
-
-			write(level, buffer, size);
-		}
-
-		template <typename... Args>
-		inline void log(LogLevel level, std::string format, const Args &...args) {
-
-			char buffer[256];
-			int size = idl::Format(buffer, 256, ("%s" + format).c_str(), LogLevelString[level], args...);
+			char buffer[N];
+			int size = idl::Format(buffer, N, line, LogLevelString[level], args...);
 
 			write(level, buffer, size);
 		}
 	};
-	
+
 	extern XSIM_API Logger logger;
 
 #define LOG_ERROR(msm, ...) xsim::logger.log(xsim::LogLevel::ERROR, msm, ##__VA_ARGS__)
