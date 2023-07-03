@@ -21,9 +21,9 @@
 		{
 			"name": "Linux",
 			"includePath": [
-				"${workspaceFolder}/platform/src/**",
-				"${workspaceFolder}/engine/src/**",
-				"${workspaceFolder}/launcher/src/**"
+				"${workspaceFolder}/platform/src",
+				"${workspaceFolder}/engine/src",
+				"${workspaceFolder}/launcher/src"
 			],
 			"defines": [
 				"_DEBUG",

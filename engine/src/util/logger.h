@@ -25,7 +25,12 @@ namespace xsim {
 		inline void log(LogLevel level, const char *format, const Args &...args) {
 
 			char line[N] = "%s";
+
+#ifdef IDL_WINDOWS_PLATFORM
 			strcat_s(line, format);
+#else
+			strcat(line, format);
+#endif
 
 			char buffer[N];
 			int size = idl::Format(buffer, N, line, LogLevelString[level], args...);

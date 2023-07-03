@@ -47,27 +47,30 @@ KeySym key;      // a dealie-bob to handle KeyPress Events
 char text[255];  // a char buffer for KeyPress Events
 
 void idl::process_events(idl_window* window) {
-	XNextEvent(window->display, &event);
-	switch (event.type) {
-		case Expose:
-			if (event.xexpose.count == 0) {  // TODO: implement redraw
-			}
-			break;
+	// Handle XEvents and flush the input
+	while (XPending(window->display)) {
+		XNextEvent(window->display, &event);
+		switch (event.type) {
+			case Expose:
+				if (event.xexpose.count == 0) {  // TODO: implement redraw
+				}
+				break;
 
-		case KeyPress:
+			case KeyPress:
 
-			XLookupString(&event.xkey, text, 255, &key, 0);  // TODO: implement input keys
+				XLookupString(&event.xkey, text, 255, &key, 0);  // TODO: implement input keys
 
-			break;
+				break;
 
-		case ClientMessage:
+			case ClientMessage:
 
-			if (event.xclient.data.l[0] == window->deleteMessage)  // window close
-				window->close = true;
-			break;
+				if (event.xclient.data.l[0] == window->deleteMessage)  // window close
+					window->close = true;
+				break;
 
-		default:
-			break;
+			default:
+				break;
+		}
 	}
 }
 
