@@ -7,7 +7,7 @@
 
 namespace idl {
 
-	enum GraphicRender {
+	enum GraphicRenderType {
 		IDL_NONE,
 		IDL_OPENGL,
 		IDL_EGL_OPENGL,
@@ -26,13 +26,13 @@ namespace idl {
 	class IDL_API Context {
 
 	protected:
-		GraphicRender type;
+		GraphicRenderType type;
 		bool initialized = false;
 		ContextInfo info;
 		Render* render = 0;
 
 	public:
-		Context(GraphicRender type);
+		Context(GraphicRenderType type);
 		virtual ~Context() = 0;
 		Render* getRender();
 		virtual bool init(int major, int minor, u8 color = 32, u8 depth = 24) = 0;
@@ -43,7 +43,7 @@ namespace idl {
 		virtual ContextInfo getInfo() = 0;
 	};
 
-	IDL_API Context* create_context(GraphicRender type);
+	IDL_API Context* create_context(GraphicRenderType type = IDL_NONE);
 	IDL_API void destroy_context(Context* context);
 
 }  // namespace idl

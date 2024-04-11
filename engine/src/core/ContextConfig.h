@@ -2,13 +2,12 @@
 #define XSIM_CONTEXT_CONFIG_H
 
 #include "defines.h"
-#include <idl_context.h>
 
 namespace xsim {
 
 	struct ContextConfig {
 		// Render Type
-		idl::GraphicRender type;
+		// idl::GraphicRenderType type; // TODO: define type on engine
 
 		// Context major version
 		int major;

@@ -1,4 +1,5 @@
 #include <EntryBase.h>
+#include "core/RenderRegister.h"
 
 class MyGame : public GameBase {
 
@@ -8,7 +9,7 @@ public:
 		appConf.width = 1280;
 		appConf.height = 720;
 
-		contextConf.type = idl::GraphicRender::IDL_OPENGL;
+		// contextConf.type = idl::GraphicRenderType::IDL_OPENGL;
 		contextConf.major = 3;
 		contextConf.minor = 1;
 	}
@@ -17,6 +18,7 @@ public:
 	u32 vbo;
 	int size_bytes;
 	int count;
+	idl::Render* render;
 
 	float data[18] = {
 			-0.5f, 0.0f,  0.0f,
@@ -32,7 +34,9 @@ public:
 			0.01f, 0.01f, 0.01f
 	};
 
-	void init() {		
+	void init() {
+
+		render = RenderRegister::render;
 
 		size_bytes = sizeof(data);
 		count = size_bytes / (3 * sizeof(float));

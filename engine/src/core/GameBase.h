@@ -4,7 +4,6 @@
 #include "defines.h"
 #include "ApplicationConfig.h"
 #include "ContextConfig.h"
-#include <idl_render.h>
 
 namespace xsim {
 
@@ -12,7 +11,6 @@ namespace xsim {
 	public:
 		ApplicationConfig appConf;
 		ContextConfig contextConf;
-		idl::Render* render;
 
 	public:
 		GameBase();

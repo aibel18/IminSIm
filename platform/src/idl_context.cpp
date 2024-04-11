@@ -1,7 +1,7 @@
 #include "idl_context.h"
 #include "render/idl_opengl_context.h"
 
-idl::Context::Context(GraphicRender type) : type(type) {
+idl::Context::Context(GraphicRenderType type) : type(type) {
 }
 
 idl::Context::~Context() {
@@ -14,7 +14,7 @@ idl::Render* idl::Context::getRender() {
 	return render;
 }
 
-idl::Context* idl::create_context(GraphicRender graphicContext) {
+idl::Context* idl::create_context(GraphicRenderType graphicContext) {
 
 	switch (graphicContext) {
 		case idl::IDL_OPENGL:

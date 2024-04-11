@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "util/logger.h"
-#include <idl_window.h>
+#include <idl_context.h>
+#include "RenderRegister.h"
 
 using namespace idl;
 
@@ -22,7 +23,7 @@ bool xsim::Application::create() {
 	// init log
 
 	// init render context
-	context = create_context(game->contextConf.type);
+	context = create_context();
 	if (!context || !context->init(game->contextConf.major, game->contextConf.minor)) {
 		LOG_ERROR("Context was not created.");
 		return false;
@@ -32,7 +33,7 @@ bool xsim::Application::create() {
 	LOG_INFO("version : %s", info.version);
 
 	// init render
-	game->render = context->getRender();
+	RenderRegister::render = context->getRender();
 
 	// init window
 	window = create_window(game->appConf.name, game->appConf.width, game->appConf.height);
