@@ -1,5 +1,5 @@
 #include <EntryBase.h>
-#include "core/RenderRegister.h"
+#include "render/LineRender.h"
 
 class MyGame : public GameBase {
 
@@ -14,60 +14,46 @@ public:
 		contextConf.minor = 1;
 	}
 
-	u32 vao;
-	u32 vbo;
-	int size_bytes;
-	int count;
-	idl::Render* render;
-
-	float data[18] = {
-			-0.5f, 0.0f,  0.0f,
-			-1.0f, -1.0f, 0.0f,
-			1.0f, -1.0f, 0.0f,
-			0.0f, 1.0f, 0.0f,
-			-1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f
+	std::vector<float> points = {
+	    -0.0f, 0.0f, 0.0f,
+			-0.5f, 0.0f, 0.0f,
+			-0.5f, 1.0f, 0.0f,
+			0.5f, 1.0f, 0.0f,
+			0.5f, -1.0f, 0.0f,
+			0.0f, -1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f,
 	};
-
-	float velocity[6] = {
-			0.01f, 0.01f, 0.01f,
-			0.01f, 0.01f, 0.01f
-	};
+	LineRender *line;
+	float velocity = 0.0005;
+	float limit = 1.0f;
 
 	void init() {
-
-		render = RenderRegister::render;
-
-		size_bytes = sizeof(data);
-		count = size_bytes / (3 * sizeof(float));
-		render->setClearColor(0.392f, 0.584f, 0.929f);
-		render->initData(vao, vbo, data, size_bytes, true);
+		line = new LineRender(points);
 	}
 
 	void update() {
-		for (int i = 0; i < 6; i++) {
-			if (data[i * 3] > 1.5f) {
-				data[i * 3] = 1.5f;
-				velocity[i] *= -1;
+		for (int i = 0; i < points.size() / 3; i++) {
+
+			if (line->getPoint(0) > limit) {
+				line->getPoint(0) = limit;
+				velocity *= -1;
 			}
-			if (data[i * 3] < -1.5) {
-				data[i * 3] = -1.5;
-				velocity[i] *= -1;
+			if (line->getPoint(0) < -limit) {
+				line->getPoint(0) = -limit;
+				velocity *= -1;
 			}
 
-			data[i * 3] += velocity[i];
+			line->getPoint(i * 3) += velocity;
 		}
-		render->updateData(vbo, data, size_bytes);
+		line->update();
 	}
 
 	void draw() {
-		render->clear();
-		render->setColor(0.0f, 1.f, 0.f);
-		render->drawData(vao, count);
+		line->draw();
 	}
 
 	void end() {
-		render->endData(vao, vbo);
+		delete line;
 	}
 
 	void onResize(int width, int height) {

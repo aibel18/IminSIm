@@ -63,7 +63,10 @@ bool xsim::Application::run() {
 		return false;
 	}
 
+	RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);  // TODO: move this in other side
+
 	while (!idl::is_closed(window)) {
+		RenderRegister::render->clear();  // TODO: move this in other side
 		idl::process_events(window);
 
 		game->update();
