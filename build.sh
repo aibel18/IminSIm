@@ -5,7 +5,7 @@ Verify()
 	ERRORLEVEL=$?
 	if [ $ERRORLEVEL -ne 0 ]
 	then
-		echo "Error:"$ERRORLEVEL && exit
+		echo "Error: "$ERRORLEVEL && exit
 	fi
 }
 
@@ -14,7 +14,6 @@ Platform()
 	pushd "platform" > /dev/null
 		source build.sh
 	popd > /dev/null
-	Verify
 }
 
 Engine()
@@ -22,7 +21,6 @@ Engine()
 	pushd "engine" > /dev/null
 		source build.sh
 	popd > /dev/null
-	Verify
 }
 
 Launcher()
@@ -30,7 +28,8 @@ Launcher()
 	pushd "launcher" > /dev/null
 		source build.sh
 	popd > /dev/null
-	Verify
+	
+	$OUT/launcher
 }
 
 All()

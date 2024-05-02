@@ -19,3 +19,5 @@ fi
 echo "Building $assembly..."
 
 clang++ $cFilenames $compilerFlags -o $OUT/$assembly $defines $includeFlags $linkerFlags
+
+Verify

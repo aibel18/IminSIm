@@ -19,3 +19,5 @@ fi
 echo "Building lib$assembly$EXT_LIB..."
 
 clang++ $cFilenames $compilerFlags -o $OUT/lib$assembly$EXT_LIB $defines $includeFlags $linkerFlags
+
+Verify
