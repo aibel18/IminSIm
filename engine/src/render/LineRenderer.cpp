@@ -1,24 +1,24 @@
-#include "LineRender.h"
+#include "LineRenderer.h"
 #include "util/logger.h"
 
-xsim::LineRender::LineRender(std::vector<float>& data) {
+xsim::LineRenderer::LineRenderer(std::vector<float>& data) {
 	this->data.assign(data.begin(), data.end());
 	RenderRegister::render->initData(vao, vbo, &this->data[0], this->data.size() * sizeof(float), true);
 }
 
-xsim::LineRender::~LineRender() {
+xsim::LineRenderer::~LineRenderer() {
 	RenderRegister::render->endData(vao, vbo);
 	LOG_INFO("destroy");
 }
 
-float& xsim::LineRender::getPoint(int index) {
+float& xsim::LineRenderer::getPoint(int index) {
 	return this->data[index];
 }
 
-void xsim::LineRender::draw() {
+void xsim::LineRenderer::draw() {
 	RenderRegister::render->drawData(vao, data.size() / 3);
 }
 
-void xsim::LineRender::update() {
+void xsim::LineRenderer::update() {
 	RenderRegister::render->updateData(vbo, data.data(), this->data.size() * sizeof(float));
 }

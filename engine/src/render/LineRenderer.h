@@ -1,5 +1,5 @@
-#ifndef XSIM_RENDER_LINE_H
-#define XSIM_RENDER_LINE_H
+#ifndef XSIM_LINE_RENDERER_H
+#define XSIM_LINE_RENDERER_H
 
 #include "defines.h"
 #include "core/RenderRegister.h"
@@ -7,10 +7,10 @@
 
 namespace xsim {
 
-	class XSIM_API LineRender {
+	class XSIM_API LineRenderer {
 	public:
-		LineRender(std::vector<float>& data);
-		~LineRender();
+		LineRenderer(std::vector<float>& data);
+		~LineRenderer();
 
 		float& getPoint(int index);
 

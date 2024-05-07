@@ -1,5 +1,5 @@
 #include <EntryBase.h>
-#include "render/LineRender.h"
+#include "render/LineRenderer.h"
 
 class MyGame : public GameBase {
 
@@ -23,12 +23,12 @@ public:
 			0.0f, -1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f,
 	};
-	LineRender *line;
+	LineRenderer *line;
 	float velocity = 0.0005;
 	float limit = 1.0f;
 
 	void init() {
-		line = new LineRender(points);
+		line = new LineRenderer(points);
 	}
 
 	void update() {
