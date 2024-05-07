@@ -7,14 +7,14 @@
 
 namespace xsim {
 
-	class XSIM_API LineRenderer {
+	class XSIM_API LineRenderer : public BaseRenderer {
 	public:
 		LineRenderer(std::vector<float>& data);
 		~LineRenderer();
 
 		float& getPoint(int index);
 
-		void draw();
+		void draw() override;
 		void update();
 
 	private:
