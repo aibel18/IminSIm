@@ -1,7 +1,7 @@
 #include <EntryBase.h>
 #include "render/LineRenderer.h"
 
-class MyGame : public GameBase {
+class MyGame : public BaseGame {
 
 public:
 	MyGame() {

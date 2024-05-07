@@ -9,7 +9,7 @@ bool initialized = false;
 static Context* context;
 static idl_window* window;
 
-xsim::Application::Application(GameBase* game) : game(game) {
+xsim::Application::Application(BaseGame* game) : game(game) {
 }
 
 bool xsim::Application::create() {

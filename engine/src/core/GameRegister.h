@@ -2,13 +2,13 @@
 #define XSIM_GAME_REGISTER_H
 
 #include "defines.h"
-#include "core/GameBase.h"
+#include "core/BaseGame.h"
 
 namespace xsim {
 
 	class XSIM_API GameRegister {
 	public:
-		static GameBase *game;
+		static BaseGame *game;
 	};
 
 }  // namespace xsim

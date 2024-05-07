@@ -1,5 +1,5 @@
-#ifndef XSIM_GAME_BASE_H
-#define XSIM_GAME_BASE_H
+#ifndef XSIM_BASE_GAME_H
+#define XSIM_BASE_GAME_H
 
 #include "defines.h"
 #include "ApplicationConfig.h"
@@ -7,14 +7,14 @@
 
 namespace xsim {
 
-	class XSIM_API GameBase {
+	class XSIM_API BaseGame {
 	public:
 		ApplicationConfig appConf;
 		ContextConfig contextConf;
 
 	public:
-		GameBase();
-		virtual ~GameBase() = 0;
+		BaseGame();
+		virtual ~BaseGame() = 0;
 
 	protected:
 		virtual void init() = 0;

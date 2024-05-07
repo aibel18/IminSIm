@@ -7,7 +7,7 @@ using namespace xsim;
 int main() {
 
 	// Request the game instance
-	GameBase* game = GameRegister::game;
+	BaseGame* game = GameRegister::game;
 
 	if (!game) {
 		LOG_ERROR("Game was not created");

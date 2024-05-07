@@ -1,3 +1,3 @@
 #include "GameRegister.h"
 
-xsim::GameBase* xsim::GameRegister::game;
+xsim::BaseGame* xsim::GameRegister::game;
