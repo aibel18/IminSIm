@@ -19,7 +19,6 @@ namespace xsim {
 	protected:
 		virtual void init() = 0;
 		virtual void update() = 0;
-		virtual void draw() = 0;
 		virtual void end() = 0;
 		virtual void onResize(int width, int height) = 0;
 
