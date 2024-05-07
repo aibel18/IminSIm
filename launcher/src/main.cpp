@@ -48,12 +48,7 @@ public:
 		line->update();
 	}
 
-	void draw() {
-		line->draw();
-	}
-
 	void end() {
-		delete line;
 	}
 
 	void onResize(int width, int height) {

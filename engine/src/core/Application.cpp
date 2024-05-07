@@ -70,11 +70,22 @@ bool xsim::Application::run() {
 		idl::process_events(window);
 
 		game->update();
-		game->draw();
+
+		// call draw function of all renderers
+		for (auto& r : RenderRegister::renderers) {
+			r->draw();
+		}
 
 		context->swapInterval(window);
 		context->swapBuffers(window);
 	}
+
+	// call destructor of all renderers
+	for (auto& r : RenderRegister::renderers) {
+		delete r;
+		r = 0;
+	}
+	RenderRegister::renderers.clear(); // TODO: verify if it's necessary this line
 
 	game->end();
 
