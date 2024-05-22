@@ -22,20 +22,4 @@
 	#endif
 #endif
 
-// Initial
-#define NULL 0
-
-// Unsigned int types.
-typedef unsigned char u8;
-
-// Properly define static assertions.
-#if defined(__clang__) || defined(__gcc__)
-	#define STATIC_ASSERT _Static_assert
-#else
-	#define STATIC_ASSERT static_assert
-#endif
-
-// Ensure all types are of the correct size.
-STATIC_ASSERT(sizeof(u8) == 1, "Expected u8 to be 1 byte.");
-
 #endif
