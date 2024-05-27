@@ -9,9 +9,15 @@
 namespace xsim {
 
 	class XSIM_API RenderRegister {
+    private:
+		static std::vector<BaseRenderer*> renderers;
 	public:
 		static idl::Render* render;
-		static std::vector<BaseRenderer*> renderers;
+
+        static void pruning();
+        static void add(BaseRenderer*);
+        static void drawAll();
+        static void cleanUp();
 	};
 
 }  // namespace xsim

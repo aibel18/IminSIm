@@ -3,7 +3,7 @@
 #include "util/logger.h"
 
 xsim::BaseRenderer::BaseRenderer() : isLife(true), isInit(false) {
-    RenderRegister::renderers.push_back(this);
+    RenderRegister::add(this);
     LOG_DEBUG("Created Renderer: %p", this);
 }
 

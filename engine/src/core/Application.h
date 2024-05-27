@@ -12,8 +12,10 @@ namespace xsim {
 
 	public:
 		Application(BaseGame* game);
+		~Application();
 		bool create();
 		bool run();
+        bool cleanUp();
 	};
 }  // namespace xsim
 #endif

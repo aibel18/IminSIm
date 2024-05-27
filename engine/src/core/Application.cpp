@@ -10,6 +10,11 @@ static Context* context;
 static idl_window* window;
 
 xsim::Application::Application(BaseGame* game) : game(game) {
+    LOG_DEBUG("Created Application");
+}
+
+xsim::Application::~Application() {
+    LOG_DEBUG("Destroyed Application");
 }
 
 bool xsim::Application::create() {
@@ -51,6 +56,7 @@ bool xsim::Application::create() {
 
 	/* --- Initialize game --- */
 	game->init();
+    RenderRegister::pruning();
 	game->onResize(game->appConf.width, game->appConf.height);
 
 	initialized = true;
@@ -65,30 +71,28 @@ bool xsim::Application::run() {
 
 	RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);  // TODO: move this in other side
 
+    LOG_DEBUG("Start main loop");
+
 	while (!idl::is_closed(window)) {
 		RenderRegister::render->clear();  // TODO: move this in other side
 		idl::process_events(window);
 
+        RenderRegister::drawAll();
 		game->update();
-
-		// call draw function of all renderers
-		for (auto& r : RenderRegister::renderers) {
-			r->draw();
-		}
+        RenderRegister::pruning();
 
 		context->swapInterval(window);
 		context->swapBuffers(window);
 	}
-
-	// call destructor of all renderers
-	for (auto& r : RenderRegister::renderers) {
-		delete r;
-		r = 0;
-	}
-	RenderRegister::renderers.clear(); // TODO: verify if it's necessary this line
+    LOG_DEBUG("End main loop");
 
 	game->end();
 
+	return true;
+}
+
+bool xsim::Application::cleanUp() {
+    RenderRegister::cleanUp();
 	context->destroyCurrent(window);
 
 	destroy_window(window);
