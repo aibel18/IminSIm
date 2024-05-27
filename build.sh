@@ -28,8 +28,11 @@ Launcher()
 	pushd "launcher" > /dev/null
 		source build.sh
 	popd > /dev/null
-	
-	$OUT/launcher
+}
+
+Run()
+{
+    $OUT/launcher
 }
 
 All()
@@ -49,7 +52,7 @@ DEBUG=false
 mkdir -p "$OUT"
 mkdir -p "$BUILD"
 
-while getopts :pela option;
+while getopts :pelar option;
 do
 	case "$option" in
 		p) # build platform
@@ -63,6 +66,9 @@ do
 			exit;;
 		a) # build all
 			All
+			exit;;
+        r) # run
+			Run
 			exit;;
 		(\?) # no parameter
 			echo "Error: Invalid option"
