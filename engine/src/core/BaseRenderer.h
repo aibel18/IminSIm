@@ -11,9 +11,15 @@ namespace xsim {
 		virtual ~BaseRenderer() = 0;
 
 	protected:
+		virtual void init() = 0;
 		virtual void draw() = 0;
 
-		friend class Application;
+    private:
+        bool isLife;
+        bool isInit;
+        void initSuper();
+
+		friend class RenderRegister;
 	};
 
 }  // namespace xsim
