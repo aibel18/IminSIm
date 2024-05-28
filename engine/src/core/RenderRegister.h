@@ -14,8 +14,8 @@ namespace xsim {
 	public:
 		static idl::Render* render;
 
-        static void pruning();
         static void add(BaseRenderer*);
+        static void remove(BaseRenderer*);
         static void drawAll();
         static void cleanUp();
 	};

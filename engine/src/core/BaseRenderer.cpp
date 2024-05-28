@@ -2,14 +2,14 @@
 #include "RenderRegister.h"
 #include "util/logger.h"
 
-xsim::BaseRenderer::BaseRenderer() : isLife(true), isInit(false) {
-    RenderRegister::add(this);
+xsim::BaseRenderer::BaseRenderer() : isInit(false) {
     LOG_DEBUG("Created Renderer: %p", this);
+    RenderRegister::add(this);
 }
 
 xsim::BaseRenderer::~BaseRenderer() {
-    this->isLife = false;
     LOG_DEBUG("Destroyed Renderer: %p", this);
+    RenderRegister::remove(this);
 }
 
 // TODO: change function name

@@ -15,7 +15,6 @@ namespace xsim {
 		virtual void draw() = 0;
 
     private:
-        bool isLife;
         bool isInit;
         void initSuper();
 

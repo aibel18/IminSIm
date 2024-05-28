@@ -56,7 +56,6 @@ bool xsim::Application::create() {
 
 	/* --- Initialize game --- */
 	game->init();
-    RenderRegister::pruning();
 	game->onResize(game->appConf.width, game->appConf.height);
 
 	initialized = true;
@@ -77,9 +76,8 @@ bool xsim::Application::run() {
 		RenderRegister::render->clear();  // TODO: move this in other side
 		idl::process_events(window);
 
-        RenderRegister::drawAll();
 		game->update();
-        RenderRegister::pruning();
+        RenderRegister::drawAll();
 
 		context->swapInterval(window);
 		context->swapBuffers(window);

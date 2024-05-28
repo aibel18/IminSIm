@@ -1,21 +1,9 @@
 #include "RenderRegister.h"
+#include "GameRegister.h"
 #include "util/logger.h"
 
 idl::Render* xsim::RenderRegister::render;
 std::vector<xsim::BaseRenderer*> xsim::RenderRegister::renderers;
-
-void xsim::RenderRegister::pruning() {
-    auto it = renderers.begin();
-    while (it != renderers.end()) {
-        if (*it && (*it)->isLife) {
-            it++;
-        } else {
-            LOG_DEBUG("Remove Renderer: %p", (*it));
-            *it = renderers.back();  // replace by the last
-            renderers.pop_back();    // remove the last
-        }
-    }
-}
 
 void xsim::RenderRegister::add(BaseRenderer* renderer) {
     // TODO: how use this verification in constructor
@@ -24,7 +12,27 @@ void xsim::RenderRegister::add(BaseRenderer* renderer) {
     //     renderer->init();
     // }
 
+    // Game instance must be created
+    if(!GameRegister::game){
+        LOG_WARN("This Renderer can not be created before that a Game instance: %p", renderer);
+        return;
+    }
     renderers.push_back(renderer);
+}
+
+void xsim::RenderRegister::remove(BaseRenderer* renderer) {
+    auto it = renderers.begin();
+    // TODO: find element to constant complexity
+    while (it != renderers.end()) {
+        if (*it == renderer) {
+            LOG_DEBUG("Remove Renderer: %p", (*it));
+        
+            *it = renderers.back();  // replace by the last
+            renderers.pop_back();    // remove the last
+            return;
+        }
+        it++;
+    }
 }
 
 void xsim::RenderRegister::drawAll() {
@@ -39,11 +47,9 @@ void xsim::RenderRegister::drawAll() {
 void xsim::RenderRegister::cleanUp() {
     // call destructor of all Renderers that weren't destroyed
     for (auto r : renderers) {
-        if (r && r->isLife) {
-            LOG_DEBUG("Free Heap Memory of Renderer %p", r);
-            delete r;
-            r = 0;
-        }
+        LOG_DEBUG("Free Heap Memory of Renderer %p", r);
+        delete r;
+        r = 0;
     }
     renderers.clear();  // TODO: verify if it's necessary this line
 }
