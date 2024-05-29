@@ -17,7 +17,7 @@ xsim::LineRenderer::~LineRenderer() {
         RenderRegister::render->endData(vao, vbo);
 }
 
-vec3& xsim::LineRenderer::getPoint(int index) {
+vec3& xsim::LineRenderer::point(int index) {
     return data[index];
 }
 

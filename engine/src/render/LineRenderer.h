@@ -14,7 +14,8 @@ namespace xsim {
         LineRenderer(std::vector<vec3>& data);
 		~LineRenderer();
 
-		vec3& getPoint(int index);
+		vec3& point(int index);
+		inline int pointSize() const;
         void init() override;
 		void draw() override;
 		void update();
@@ -24,6 +25,10 @@ namespace xsim {
 		u32 vao;
 		u32 vbo;
 	};
+
+    inline int xsim::LineRenderer::pointSize() const {
+        return data.size();
+    }
 
 }  // namespace xsim
 #endif

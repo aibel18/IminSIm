@@ -27,61 +27,43 @@ public:
 
 	float velocity = 0.0009;
 	float limit = 1.0f;
-	LineRenderer line = LineRenderer(points);;
-	LineRenderer *line2 = new LineRenderer(points);
-	LineRenderer *line3;
-	LineRenderer *line4;
-	LineRenderer *line5;
+	LineRenderer stackLine = LineRenderer(points);
+	LineRenderer *heapLine;
 
 	void init() {
-        line5 = new LineRenderer(points);
-        LineRenderer line6 = LineRenderer(points);
+        heapLine = new LineRenderer(points);
 	}
 
-    int i = 0;
-    int step = 300;
+    int iter = 0;
 	void update() {
-        if(i++ == step ) {
-            delete line2;
-            delete line5;
-            LineRenderer line6 = LineRenderer(points);
-        }
-        if(i == step *2 ) {
-            line3 = new LineRenderer(points);
-        }
-        if(i == step *3 ) {
-            delete line3;
-        }
-        if(i == step *4 ) {
-            LineRenderer a(points);
-            LineRenderer b(points);
-            line4 = new LineRenderer(points);
-        }
-        if(i == step *5 ) {
-            new LineRenderer(points);
-        }
 
-        if(i > step *5)
-            return;
+        if (iter % 400 == 0) {
+            if (heapLine == 0) {
+                heapLine = new LineRenderer(points);
+            } else {
+                delete heapLine;
+                heapLine = 0;
+            }
+        }
+        iter++;
+        auto size = stackLine.pointSize();
+        for (int i = 0; i < size; i++) {
 
-		for (int i = 0; i < points.size(); i++) {
-
-			if (line.getPoint(0).x > limit) {
-				line.getPoint(0).x = limit;
+            if (stackLine.point(0).x > limit) {
+				stackLine.point(0).x = limit;
 				velocity *= -1;
 			}
-			if (line.getPoint(0).x < -limit) {
-				line.getPoint(0).x = -limit;
+			if (stackLine.point(0).x < -limit) {
+				stackLine.point(0).x = -limit;
 				velocity *= -1;
 			}
 
-			line.getPoint(i).x += velocity;
-		}
-		line.update();
+			stackLine.point(i).x += velocity;
+        }
+        stackLine.update();
 	}
 
 	void end() {
-        delete line4;
 	}
 
 	void onResize(int width, int height) {
