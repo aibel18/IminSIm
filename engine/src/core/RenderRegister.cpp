@@ -3,7 +3,7 @@
 #include "util/logger.h"
 
 idl::Render* xsim::RenderRegister::render;
-std::vector<xsim::BaseRenderer*> xsim::RenderRegister::renderers;
+std::set<xsim::BaseRenderer*> xsim::RenderRegister::renderers;
 
 void xsim::RenderRegister::add(BaseRenderer* renderer) {
     // TODO: how use this verification in constructor
@@ -17,21 +17,12 @@ void xsim::RenderRegister::add(BaseRenderer* renderer) {
         LOG_WARN("This Renderer can not be created before that a Game instance: %p", renderer);
         return;
     }
-    renderers.push_back(renderer);
+    renderers.insert(renderer);
 }
 
 void xsim::RenderRegister::remove(BaseRenderer* renderer) {
-    auto it = renderers.begin();
-    // TODO: find element to constant complexity
-    while (it != renderers.end()) {
-        if (*it == renderer) {
-            LOG_DEBUG("Remove Renderer: %p", (*it));
-        
-            *it = renderers.back();  // replace by the last
-            renderers.pop_back();    // remove the last
-            return;
-        }
-        it++;
+    if (renderers.erase(renderer) > 0) {
+        LOG_DEBUG("Remove Renderer: %p", renderer);
     }
 }
 

@@ -3,14 +3,14 @@
 
 #include "defines.h"
 #include <idl_render.h>
-#include <vector>
+#include <set>
 #include "BaseRenderer.h"
 
 namespace xsim {
 
 	class XSIM_API RenderRegister {
     private:
-		static std::vector<BaseRenderer*> renderers;
+		static std::set<BaseRenderer*> renderers;
 	public:
 		static idl::Render* render;
 
