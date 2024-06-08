@@ -25,6 +25,9 @@ REM command list
 	PUSHD "launcher"
 		CALL build.bat
 	POPD
+	GOTO :EOF
+
+:run
 	%OUT%/launcher.exe
 	GOTO :EOF
 
