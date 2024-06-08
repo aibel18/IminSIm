@@ -5,9 +5,13 @@
 #include "win32/idl_window_win32.h"
 #include "idl_render_opengl.h"
 #include "idl_opengl.h"
+#include <iostream>
 
-int pixelFormat;
-int wglContextAttribs[16];
+using namespace std;
+
+int sharedPixelFormat;
+int sharedContextAttribs[16];
+HGLRC sharedRC;
 
 #define WGL_FUNCTIONS                                              \
 	W(PFNWGLCHOOSEPIXELFORMATARBPROC, wglChoosePixelFormatARB)       \
@@ -32,8 +36,16 @@ bool idl::OpenGLContext::isExtFunctionsLoaded() {
 }
 
 bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
+	return true;
+}
 
-	if (isExtFunctionsLoaded()) {
+idl::OpenGLContext::OpenGLContext() : Context(IDL_OPENGL) {
+}
+
+bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
+
+    if (isExtFunctionsLoaded()) {
+        initialized = true;
 		return true;
 	}
 
@@ -61,13 +73,13 @@ bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
 			PFD_SUPPORT_OPENGL |   					// support OpenGL  
 			PFD_DOUBLEBUFFER,      					// double buffered  
 			PFD_TYPE_RGBA,         					// RGBA type  
-			depthBits,                  		// 24-bit color depth  
+			depth,                  		// 24-bit color depth  
 			0, 0, 0, 0, 0, 0,      					// color bits ignored  
 			0,                     					// no alpha buffer  
 			0,                     					// shift bit ignored  
 			0,                     					// no accumulation buffer  
 			0, 0, 0, 0,            					// accum bits ignored  
-			colorBits,                  		// 32-bit z-buffer  
+			color,                  		// 32-bit z-buffer  
 			0,                     					// no stencil buffer  
 			0,                     					// no auxiliary buffer  
 			PFD_MAIN_PLANE,        					// main layer
@@ -84,9 +96,11 @@ bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
 		return false;
 	}
 
-	HGLRC rc = wglCreateContext(dc);
+    // Old OpenGL context
 
-	if (!rc || !wglMakeCurrent(dc, rc)) {
+	HGLRC tempRC = wglCreateContext(dc);
+
+	if (!tempRC || !wglMakeCurrent(dc, tempRC)) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "Context Creation failed for dummy", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		ReleaseDC(dummy, dc);
@@ -98,29 +112,13 @@ bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
 	WGL_FUNCTIONS
 #undef W
 
-	wglMakeCurrent(dc, NULL);
-	wglDeleteContext(rc);
-	ReleaseDC(dummy, dc);
-	DestroyWindow(dummy);
-
-	if (!isExtFunctionsLoaded()) {
+    if (!isExtFunctionsLoaded()) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "OpenGL don't support WGL extensions!", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
 
-	return true;
-}
-
-idl::OpenGLContext::OpenGLContext() : Context(IDL_OPENGL) {
-}
-
-bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
-
-	if (!loadExtFunctions(color, depth)) {
-		initialized = false;
-		return false;
-	}
+    // Modern OpenGL context
 
 	const int pixelAttribs[] = {
 	    WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
@@ -134,94 +132,100 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 	};
 
 	const int contextAttribs[] = {
-		WGL_CONTEXT_MAJOR_VERSION_ARB, major,
-		WGL_CONTEXT_MINOR_VERSION_ARB, minor,
-		WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+		WGL_CONTEXT_MAJOR_VERSION_ARB, 2,
+		WGL_CONTEXT_MINOR_VERSION_ARB, 1,
+		// WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 #if LOG_DEBUG_ENABLED
 		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
 #endif
 		0,
 	};
 
-	memcpy(wglContextAttribs, contextAttribs, sizeof(contextAttribs));
-
-	HWND dummy = CreateWindowExA(0, "STATIC", "", WS_OVERLAPPED, 0, 0, 0, 0, 0, 0, 0, 0);
-
-	if (!dummy) {
-		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Window creation failed for dummy!", "Error!", MB_ICONEXCLAMATION | MB_OK);
-		return false;
-	}
-
-	HDC dc = GetDC(dummy);
-
-	if (!dc) {
-		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Recover Handle of context failed for dummy", "Error!", MB_OK | MB_ICONEXCLAMATION);
-		DestroyWindow(dummy);
-		return false;
-	}
+	memcpy(sharedContextAttribs, contextAttribs, sizeof(contextAttribs));
 
 	u32 formats;
 
-	if (!wglChoosePixelFormatARB(dc, pixelAttribs, 0, 1, &pixelFormat, &formats) || formats == 0) {
+	if (!wglChoosePixelFormatARB(dc, pixelAttribs, 0, 1, &sharedPixelFormat, &formats) || formats == 0) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "OpenGL dons't support required pixel format!", "Error!", MB_OK | MB_ICONEXCLAMATION);
+        ReleaseDC(dummy, dc);
 		DestroyWindow(dummy);
 		return false;
 	}
 
-	PIXELFORMATDESCRIPTOR pfd;
-	DescribePixelFormat(dc, pixelFormat, sizeof(pfd), &pfd);
+	sharedRC = wglCreateContextAttribsARB(dc, NULL, sharedContextAttribs);
+    /*
+    for (int minor = 5; minor >= 1; minor--) {
+        int mAttribs[] = {
+                WGL_CONTEXT_MAJOR_VERSION_ARB, 2,
+                WGL_CONTEXT_MINOR_VERSION_ARB, minor,
+                0
+        };
+        // rc = wglCreateContextAttribs(whdc, (HGLRC)sharedGLContext, mAttribs.data());
+        rc = wglCreateContextAttribsARB(dc, (HGLRC)NULL, mAttribs);
+        if (rc) {
+            cout << 2 << " " << minor << endl;
+            break;
+        }
+    }//*/
 
-	if (!pixelFormat || !SetPixelFormat(dc, pixelFormat, &pfd)) {
+
+	if (!sharedRC) {
 		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Setup pixel format failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
-		return false;
-	}
-
-	HGLRC rc = wglCreateContextAttribsARB(dc, NULL, wglContextAttribs);
-
-	if (!rc || !wglMakeCurrent(dc, rc)) {
-		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Context Creation failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, "OpenGl Context Creation failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
+        wglDeleteContext(tempRC);
 		ReleaseDC(dummy, dc);
 		DestroyWindow(dummy);
 		return false;
 	}
+
+    wglMakeCurrent(NULL, NULL);
+    wglDeleteContext(tempRC);
+    tempRC = NULL;
+
+    if(!wglMakeCurrent(dc, sharedRC)){
+        MessageBoxA(NULL, "wglMakeCurrent failed for OpenGl Context", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		ReleaseDC(dummy, dc);
+		DestroyWindow(dummy);
+		return false;
+    }
+
+    // Load OpenGL functions
 	render = new RenderOpenGL();
 	render->getInfo(info.renderer, info.version, info.glsl);
 
-	initialized = true;
-
 	wglMakeCurrent(dc, NULL);
-	wglDeleteContext(rc);
 	ReleaseDC(dummy, dc);
 	DestroyWindow(dummy);
+
+	initialized = true;
 
 	return true;
 }
 
 bool idl::OpenGLContext::makeCurrent(idl_window *window) {
 
-	if (window->context && wglMakeCurrent(window->dc, window->context))
-		return true;
-
 	IS_OPENGL_INIT
 
 	PIXELFORMATDESCRIPTOR pfd;
 
-	if (!pixelFormat || !SetPixelFormat(window->dc, pixelFormat, &pfd)) {
+	if (!sharedPixelFormat || !SetPixelFormat(window->dc, sharedPixelFormat, &pfd)) {
 		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Setup pixel format failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, "Setup pixel format failed for Current Window", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
 
-	window->context = wglCreateContextAttribsARB(window->dc, NULL, wglContextAttribs);
+	window->context = wglCreateContextAttribsARB(window->dc, sharedRC, sharedContextAttribs);
 
-	if (!window->context || !wglMakeCurrent(window->dc, window->context)) {
+	if (!window->context) {
 		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Context Creation failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, "Context Creation failed for Current Window", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		return false;
+	}
+
+    if (!wglMakeCurrent(window->dc, window->context)) {
+		// TODO: Add Exception Manager
+		MessageBoxA(NULL, "Change wglMakeCurrent for Current Window", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
 
@@ -246,7 +250,11 @@ bool idl::OpenGLContext::destroyCurrent(idl_window *window) {
 		wglMakeCurrent(window->dc, NULL);
 		wglDeleteContext(window->context);
 	}
+    if(sharedRC){
+        wglDeleteContext(sharedRC);
+    }
 	window->context = 0;
+    sharedRC = 0;
 	return true;
 }
 
