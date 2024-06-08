@@ -5,9 +5,6 @@
 #include "win32/idl_window_win32.h"
 #include "idl_render_opengl.h"
 #include "idl_opengl.h"
-#include <iostream>
-
-using namespace std;
 
 int sharedPixelFormat;
 int sharedContextAttribs[16];
@@ -49,6 +46,50 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		return true;
 	}
 
+    PIXELFORMATDESCRIPTOR pfd = {
+	    sizeof(PIXELFORMATDESCRIPTOR),  // size of this pfd
+			1,                     					// version number
+			PFD_DRAW_TO_WINDOW |   					// support window  
+			PFD_SUPPORT_OPENGL |   					// support OpenGL  
+			PFD_DOUBLEBUFFER,      					// double buffered  
+			PFD_TYPE_RGBA,         					// RGBA type  
+			depth,                  		        // 24-bit color depth  
+			0, 0, 0, 0, 0, 0,      					// color bits ignored  
+			0,                     					// no alpha buffer  
+			0,                     					// shift bit ignored  
+			0,                     					// no accumulation buffer  
+			0, 0, 0, 0,            					// accum bits ignored  
+			color,                  		        // 32-bit z-buffer  
+			0,                     					// no stencil buffer  
+			0,                     					// no auxiliary buffer  
+			PFD_MAIN_PLANE,        					// main layer
+			0,                     					// reserved
+			0, 0, 0                					// layer masks ignored
+	};
+
+    const int pixelAttribs[] = {
+	    WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
+	    WGL_SUPPORT_OPENGL_ARB,  GL_TRUE,
+	    WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
+	    WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
+	    WGL_COLOR_BITS_ARB, color,
+	    WGL_DEPTH_BITS_ARB, depth,
+	    WGL_STENCIL_BITS_ARB, 8, // TODO: create a parameter to set this field
+	    0,
+	};
+
+	int contextAttribs[] = {
+		WGL_CONTEXT_MAJOR_VERSION_ARB, major,
+		WGL_CONTEXT_MINOR_VERSION_ARB, minor,
+		// WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB, // TODO: verify in another window versions
+#if LOG_DEBUG_ENABLED
+		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
+#endif
+		0,
+	};
+
+    // Creating a Dummy Window
+
 	HWND dummy = CreateWindowExA(0, "STATIC", "", WS_OVERLAPPED, 0, 0, 0, 0, 0, 0, 0, 0);
 
 	if (!dummy) {
@@ -64,28 +105,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		MessageBoxA(NULL, "Recover Handle of context failed for dummy", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		DestroyWindow(dummy);
 		return false;
-	}
-
-	PIXELFORMATDESCRIPTOR pfd = {
-	    sizeof(PIXELFORMATDESCRIPTOR),  // size of this pfd
-			1,                     					// version number
-			PFD_DRAW_TO_WINDOW |   					// support window  
-			PFD_SUPPORT_OPENGL |   					// support OpenGL  
-			PFD_DOUBLEBUFFER,      					// double buffered  
-			PFD_TYPE_RGBA,         					// RGBA type  
-			depth,                  		// 24-bit color depth  
-			0, 0, 0, 0, 0, 0,      					// color bits ignored  
-			0,                     					// no alpha buffer  
-			0,                     					// shift bit ignored  
-			0,                     					// no accumulation buffer  
-			0, 0, 0, 0,            					// accum bits ignored  
-			color,                  		// 32-bit z-buffer  
-			0,                     					// no stencil buffer  
-			0,                     					// no auxiliary buffer  
-			PFD_MAIN_PLANE,        					// main layer
-			0,                     					// reserved
-			0, 0, 0                					// layer masks ignored
-	};
+	}	
 
 	int pixelFormat = ChoosePixelFormat(dc, &pfd);
 
@@ -120,29 +140,6 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 
     // Modern OpenGL context
 
-	const int pixelAttribs[] = {
-	    WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
-	    WGL_SUPPORT_OPENGL_ARB,  GL_TRUE,
-	    WGL_DOUBLE_BUFFER_ARB, GL_TRUE,
-	    WGL_PIXEL_TYPE_ARB, WGL_TYPE_RGBA_ARB,
-	    WGL_COLOR_BITS_ARB, color,
-	    WGL_DEPTH_BITS_ARB, depth,
-	    WGL_STENCIL_BITS_ARB, 8,
-	    0,
-	};
-
-	const int contextAttribs[] = {
-		WGL_CONTEXT_MAJOR_VERSION_ARB, 2,
-		WGL_CONTEXT_MINOR_VERSION_ARB, 1,
-		// WGL_CONTEXT_PROFILE_MASK_ARB,	WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-#if LOG_DEBUG_ENABLED
-		WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_DEBUG_BIT_ARB,
-#endif
-		0,
-	};
-
-	memcpy(sharedContextAttribs, contextAttribs, sizeof(contextAttribs));
-
 	u32 formats;
 
 	if (!wglChoosePixelFormatARB(dc, pixelAttribs, 0, 1, &sharedPixelFormat, &formats) || formats == 0) {
@@ -153,24 +150,25 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		return false;
 	}
 
-	sharedRC = wglCreateContextAttribsARB(dc, NULL, sharedContextAttribs);
-    /*
-    for (int minor = 5; minor >= 1; minor--) {
-        int mAttribs[] = {
-                WGL_CONTEXT_MAJOR_VERSION_ARB, 2,
-                WGL_CONTEXT_MINOR_VERSION_ARB, minor,
-                0
-        };
-        // rc = wglCreateContextAttribs(whdc, (HGLRC)sharedGLContext, mAttribs.data());
-        rc = wglCreateContextAttribsARB(dc, (HGLRC)NULL, mAttribs);
-        if (rc) {
-            cout << 2 << " " << minor << endl;
+    // find openGL version // TODO: implement this in Linux
+    for (int majorIter = 5; majorIter >= 1; majorIter--) {
+        for (int minorIter = 5; minorIter >= 0; minorIter--) {
+
+            contextAttribs[1] = majorIter;
+            contextAttribs[3] = minorIter;
+
+            sharedRC = wglCreateContextAttribsARB(dc, (HGLRC)NULL, contextAttribs);
+            if (sharedRC) {
+                break;
+            }
+        }
+        if (sharedRC) {
             break;
         }
-    }//*/
 
+    }
 
-	if (!sharedRC) {
+    if (!sharedRC) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "OpenGl Context Creation failed", "Error!", MB_OK | MB_ICONEXCLAMATION);
         wglDeleteContext(tempRC);
@@ -178,6 +176,8 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		DestroyWindow(dummy);
 		return false;
 	}
+
+    memcpy(sharedContextAttribs, contextAttribs, sizeof(contextAttribs));
 
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempRC);
