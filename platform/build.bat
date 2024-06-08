@@ -10,7 +10,8 @@ FOR /R %%f in (*.cpp) do (
 SET assembly=platform
 SET includeFlags=-I%WORKING_DIR%/%assembly%/src
 SET linkerFlags=-luser32 -lgdi32 -lopenGL32
-SET compilerFlags=-shared -Wvarargs -Wall -Werror
+@REM TODO: create a global variable with all common parameters
+SET compilerFlags=-shared -Wvarargs -Wall -Werror -Wno-missing-braces
 SET defines=-D_CRT_SECURE_NO_WARNINGS -DIDL_API_BUILD
 
 IF "%DEBUG%" == "true" (
