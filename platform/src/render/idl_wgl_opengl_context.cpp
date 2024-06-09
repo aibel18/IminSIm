@@ -6,9 +6,9 @@
 #include "idl_render_opengl.h"
 #include "idl_opengl.h"
 
-int sharedPixelFormat;
-int sharedContextAttribs[16];
-HGLRC sharedRC;
+int sharedPixelFormat;          // TODO: up to parent instance
+int sharedContextAttribs[16];   // TODO: up to parent instance
+HGLRC sharedRC;                 // TODO: up to parent instance
 
 #define WGL_FUNCTIONS                                              \
 	W(PFNWGLCHOOSEPIXELFORMATARBPROC, wglChoosePixelFormatARB)       \
@@ -135,6 +135,8 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
     if (!isExtFunctionsLoaded()) {
 		// TODO: Add Exception Manager
 		MessageBoxA(NULL, "OpenGL don't support WGL extensions!", "Error!", MB_OK | MB_ICONEXCLAMATION);
+        ReleaseDC(dummy, dc);
+		DestroyWindow(dummy);
 		return false;
 	}
 
@@ -150,7 +152,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		return false;
 	}
 
-    // find openGL version // TODO: implement this in Linux
+    // find openGL major version // TODO: try up to parent instance
     for (int majorIter = major; majorIter >= 1; majorIter--) {
         for (int minorIter = minor; minorIter >= 0; minorIter--) {
 
@@ -185,6 +187,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 
     if(!wglMakeCurrent(dc, sharedRC)){
         MessageBoxA(NULL, "wglMakeCurrent failed for OpenGl Context", "Error!", MB_OK | MB_ICONEXCLAMATION);
+        wglDeleteContext(sharedRC);
 		ReleaseDC(dummy, dc);
 		DestroyWindow(dummy);
 		return false;
@@ -225,7 +228,7 @@ bool idl::OpenGLContext::makeCurrent(idl_window *window) {
 
     if (!wglMakeCurrent(window->dc, window->context)) {
 		// TODO: Add Exception Manager
-		MessageBoxA(NULL, "Change wglMakeCurrent for Current Window", "Error!", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, "wglMakeCurrent failed for Current Window", "Error!", MB_OK | MB_ICONEXCLAMATION);
 		return false;
 	}
 
@@ -240,7 +243,6 @@ bool idl::OpenGLContext::swapInterval(idl_window* window) {
 
 bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 
-	IS_OPENGL_INIT
 	SwapBuffers(window->dc);
 	return true;
 }

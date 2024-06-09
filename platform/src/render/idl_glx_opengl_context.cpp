@@ -76,7 +76,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 	    0,
 	};
 
-	const int contextAttribs[] = {
+	int contextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, major,
 		GLX_CONTEXT_MINOR_VERSION_ARB, minor,
 		GLX_CONTEXT_PROFILE_MASK_ARB,	GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
@@ -146,7 +146,23 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		return false;
 	}
 
-	sharedContext = glXCreateContextAttribsARB(display, sharedConfig, 0, true, contextAttribs);
+    // find openGL major version // TODO: try up to parent instance
+    for (int majorIter = major; majorIter >= 1; majorIter--) {
+        for (int minorIter = minor; minorIter >= 0; minorIter--) {
+
+            contextAttribs[1] = majorIter;
+            contextAttribs[3] = minorIter;
+
+            sharedContext = glXCreateContextAttribsARB(display, sharedConfig, 0, true, contextAttribs);
+            if (sharedContext) {
+                break;
+            }
+        }
+        if (sharedContext) {
+            break;
+        }
+
+    }
 
 	if (!sharedContext) {
 		// TODO: Add Exception Manager
@@ -207,7 +223,6 @@ bool idl::OpenGLContext::swapInterval(idl_window *window) {
 
 bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 
-	IS_OPENGL_INIT
 	glXSwapBuffers(window->display, window->window);
 	return true;
 }
