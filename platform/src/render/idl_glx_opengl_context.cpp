@@ -7,9 +7,10 @@
 #include "idl_opengl.h"
 #include <stdio.h>  // TODO: remove when add exception manager
 
-int pixelFormat;
-int glxContextAttribs[16];
-GLXFBConfig glxConfig;
+GLXFBConfig sharedConfig;       // TODO: up to parent instance
+int sharedContextAttribs[16];   // TODO: up to parent instance
+GLXContext sharedContext;       // TODO: up to parent instance
+Display *display;               // TODO: up to parent instance
 
 #define GLX_MAJOR_MIN 1
 #define GLX_MINOR_MIN 2
@@ -36,8 +37,16 @@ bool idl::OpenGLContext::isExtFunctionsLoaded() {
 }
 
 bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
+    return true;
+}
+
+idl::OpenGLContext::OpenGLContext() : Context(IDL_OPENGL) {
+}
+
+bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 
 	if (isExtFunctionsLoaded()) {
+        initialized = true;
 		return true;
 	}
 
@@ -47,20 +56,7 @@ bool idl::OpenGLContext::loadExtFunctions(u8 colorBits, u8 depthBits) {
 
 	if (!isExtFunctionsLoaded()) {
 		// TODO: Add Exception Manager
-		printf("OpenGL don't support WGL extensions!\n");
-		return false;
-	}
-
-	return true;
-}
-
-idl::OpenGLContext::OpenGLContext() : Context(IDL_OPENGL) {
-}
-
-bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
-
-	if (!loadExtFunctions(color, depth)) {
-		initialized = false;
+		printf("OpenGL don't support GLX extensions!\n");
 		return false;
 	}
 
@@ -80,7 +76,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 	    0,
 	};
 
-	const int contextAttribs[] = {
+	int contextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, major,
 		GLX_CONTEXT_MINOR_VERSION_ARB, minor,
 		GLX_CONTEXT_PROFILE_MASK_ARB,	GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
@@ -90,9 +86,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		0,
 	};
 
-	memcpy(glxContextAttribs, contextAttribs, sizeof(contextAttribs));
-
-	Display *display = XOpenDisplay(0);
+	display = XOpenDisplay(0);
 
 	if (!display) {
 		// TODO: Add Exception Manager
@@ -140,7 +134,7 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 			XFree(visualInfo);
 		}
 	}
-	glxConfig = fbcConfig[selectedConfigId];
+	sharedConfig = fbcConfig[selectedConfigId];
 	XFree(fbcConfig);
 
 	Window dummy = XCreateSimpleWindow(display, DefaultRootWindow(display), 0, 0, 1, 1, 0, 0, 0);
@@ -152,11 +146,38 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 		return false;
 	}
 
-	GLXContext context = glXCreateContextAttribsARB(display, glxConfig, 0, true, glxContextAttribs);
+    // find openGL major version // TODO: try up to parent instance
+    for (int majorIter = major; majorIter >= 1; majorIter--) {
+        for (int minorIter = minor; minorIter >= 0; minorIter--) {
 
-	if (!context || !glXMakeCurrent(display, dummy, context)) {
+            contextAttribs[1] = majorIter;
+            contextAttribs[3] = minorIter;
+
+            sharedContext = glXCreateContextAttribsARB(display, sharedConfig, 0, true, contextAttribs);
+            if (sharedContext) {
+                break;
+            }
+        }
+        if (sharedContext) {
+            break;
+        }
+
+    }
+
+	if (!sharedContext) {
 		// TODO: Add Exception Manager
-		printf("Context Creation failed");
+		printf("OpenGl Context Creation failed");
+		XDestroyWindow(display, dummy);
+		XCloseDisplay(display);
+		return false;
+	}
+
+	memcpy(sharedContextAttribs, contextAttribs, sizeof(contextAttribs));
+
+    if (!glXMakeCurrent(display, dummy, sharedContext)) {
+		// TODO: Add Exception Manager
+		printf("glXMakeCurrent failed for OpenGl Context");
+        glXDestroyContext(display, sharedContext);
 		XDestroyWindow(display, dummy);
 		XCloseDisplay(display);
 		return false;
@@ -165,28 +186,29 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 	render = new RenderOpenGL();
 	render->getInfo(info.renderer, info.version, info.glsl);
 
-	initialized = true;
-
 	glXMakeCurrent(display, 0, 0);
-	// glXDestroyContext(display, context);
 	XDestroyWindow(display, dummy);
-	XCloseDisplay(display);
+
+	initialized = true;
 
 	return true;
 }
 
 bool idl::OpenGLContext::makeCurrent(idl_window *window) {
 
-	if (window->context && glXMakeCurrent(window->display, window->window, (GLXContext)window->context))
-		return true;
-
 	IS_OPENGL_INIT
 
-	window->context = glXCreateContextAttribsARB(window->display, glxConfig, 0, true, glxContextAttribs);
+	window->context = glXCreateContextAttribsARB(window->display, sharedConfig, sharedContext, true, sharedContextAttribs);
 
-	if (!window->context || !glXMakeCurrent(window->display, window->window, (GLXContext)window->context)) {
+	if (!window->context) {
 		// TODO: Add Exception Manager
-		printf("Context Creation failed\n");
+		printf("Context Creation failed for Current Window\n");
+		return false;
+	}
+
+    if (!glXMakeCurrent(window->display, window->window, (GLXContext)window->context)) {
+		// TODO: Add Exception Manager
+		printf("wglMakeCurrent failed for Current Window\n");
 		return false;
 	}
 
@@ -201,7 +223,6 @@ bool idl::OpenGLContext::swapInterval(idl_window *window) {
 
 bool idl::OpenGLContext::swapBuffers(idl_window *window) {
 
-	IS_OPENGL_INIT
 	glXSwapBuffers(window->display, window->window);
 	return true;
 }
@@ -211,7 +232,12 @@ bool idl::OpenGLContext::destroyCurrent(idl_window *window) {
 		glXMakeCurrent(window->display, 0, 0);
 		glXDestroyContext(window->display, (GLXContext)window->context);
 	}
+    if (sharedContext){
+        glXDestroyContext(display, sharedContext);
+	    XCloseDisplay(display);
+    }
 	window->context = 0;
+    sharedContext = 0;
 	return true;
 }
 
