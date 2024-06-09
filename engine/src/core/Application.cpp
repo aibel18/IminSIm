@@ -2,6 +2,7 @@
 #include "util/logger.h"
 #include <idl_context.h>
 #include "RenderRegister.h"
+#include "SimulatorRegister.h"
 
 using namespace idl;
 
@@ -40,6 +41,7 @@ bool xsim::Application::create() {
 
 	// init render
 	RenderRegister::render = context->getRender();
+    // SimulatorRegister::simulator = new Simulator();
 
 	// init window
 	window = create_window(game->appConf.name, game->appConf.width, game->appConf.height);
@@ -78,6 +80,8 @@ bool xsim::Application::run() {
 		idl::process_events(window);
 
 		game->update();
+        if(SimulatorRegister::simulator)
+            SimulatorRegister::simulator->step();
         RenderRegister::drawAll();
 
 		context->swapInterval(window);
