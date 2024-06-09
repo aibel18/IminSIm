@@ -37,10 +37,11 @@ void xsim::RenderRegister::drawAll() {
 
 void xsim::RenderRegister::cleanUp() {
     // call destructor of all Renderers that weren't destroyed
-    for (auto r : renderers) {
-        LOG_DEBUG("Free Heap Memory of Renderer %p", r);
-        delete r;
-        r = 0;
+    for (auto iter = renderers.begin(); iter != renderers.end();) {
+        auto temp = iter++;
+        LOG_DEBUG("Free Heap Memory of Renderer before %p %i", *temp, renderers.size());
+        delete (*temp);
+        LOG_DEBUG("Free Heap Memory of Renderer after %p %i", *temp, renderers.size());
     }
     renderers.clear();  // TODO: verify if it's necessary this line
 }
