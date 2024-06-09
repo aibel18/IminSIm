@@ -26,7 +26,13 @@ void xsim::LineRenderer::init() {
 }
 
 void xsim::LineRenderer::draw() {
-    RenderRegister::render->drawData(vao, data.size());
+    // TODO: improve how to treat alternative methods for different versions
+#if IDL_WINDOWS_PLATFORM
+    if (RenderRegister::render->version <= 30)
+        RenderRegister::render->drawData(vao, &data[0].x, data.size());
+    else
+#endif
+        RenderRegister::render->drawData(vao, data.size());
 }
 
 void xsim::LineRenderer::update() {

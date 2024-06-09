@@ -3,6 +3,9 @@
 
 idl::RenderOpenGL::RenderOpenGL() {
 	load_opengl_functions();
+    auto stringVersion = glGetString(GL_VERSION);
+    // converting literal version to int e.g '3.3' -> 33
+    version = (stringVersion[0] - '0') * 10 + (stringVersion[2] - '0');
 }
 void idl::RenderOpenGL::setClearColor(float r, float g, float v, float a) {
 	glClearColor(r, g, v, a);
@@ -71,4 +74,13 @@ void idl::RenderOpenGL::drawData(u32 &vao, int count) {
 void idl::RenderOpenGL::endData(u32 &vao, u32 &vbo) {
 	glDeleteBuffers(1, &vbo);       // delete VBO
 	glDeleteVertexArrays(1, &vao);  // delete VAO
+}
+
+void idl::RenderOpenGL::drawData(u32 &vao,float *data, int count) {
+	glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, data);
+
+    glDrawArrays(GL_LINE_STRIP, 0, count);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
 }

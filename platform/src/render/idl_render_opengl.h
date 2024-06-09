@@ -16,6 +16,7 @@ namespace idl {
 		void updateData(u32 &vbo, float *data, int size_bytes);
 		void drawData(u32 &vao, int count);
 		void endData(u32 &vao, u32 &vbo);
+		void drawData(u32 &vao, float *data, int count);
 	};
 }  // namespace idl
 #endif
