@@ -35,6 +35,7 @@ bool xsim::Application::create() {
 	}
 	auto info = context->getInfo();
 	LOG_INFO("renderer: %s", info.renderer);
+	LOG_INFO("glsl    : %s", info.glsl);
 	LOG_INFO("version : %s", info.version);
 
 	// init render

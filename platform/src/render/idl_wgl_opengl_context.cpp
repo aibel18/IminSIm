@@ -151,8 +151,8 @@ bool idl::OpenGLContext::init(int major, int minor, u8 color, u8 depth) {
 	}
 
     // find openGL version // TODO: implement this in Linux
-    for (int majorIter = 5; majorIter >= 1; majorIter--) {
-        for (int minorIter = 5; minorIter >= 0; minorIter--) {
+    for (int majorIter = major; majorIter >= 1; majorIter--) {
+        for (int minorIter = minor; minorIter >= 0; minorIter--) {
 
             contextAttribs[1] = majorIter;
             contextAttribs[3] = minorIter;
