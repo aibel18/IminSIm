@@ -41,7 +41,6 @@ bool xsim::Application::create() {
 
 	// init render
 	RenderRegister::render = context->getRender();
-    // SimulatorRegister::simulator = new Simulator();
 
 	// init window
 	window = create_window(game->appConf.name, game->appConf.width, game->appConf.height);
@@ -72,12 +71,12 @@ bool xsim::Application::run() {
 	}
 
     LOG_DEBUG("Start main loop");
+
 	while (!idl::is_closed(window)) {
 		idl::process_events(window);
 
 		game->update();
-        if(SimulatorRegister::simulator)
-            SimulatorRegister::simulator->step();
+        SimulatorRegister::simulate(true);
         RenderRegister::drawAll();
 
 		context->swapInterval(window);
@@ -91,6 +90,7 @@ bool xsim::Application::run() {
 }
 
 bool xsim::Application::cleanUp() {
+    SimulatorRegister::cleanUp();
     RenderRegister::cleanUp();
 	context->destroyCurrent(window);
 

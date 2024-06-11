@@ -10,10 +10,9 @@ namespace xsim {
         SimulatorBase();
         virtual ~SimulatorBase() = 0;
 
-        virtual void step() = 0;
-
     protected:
         virtual void init() = 0;
+        virtual void step() = 0;
 
         friend class SimulatorRegister;
     };
