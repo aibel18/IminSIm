@@ -31,6 +31,7 @@ public:
 	LineRenderer *heapLine;
 
 	void init() {
+        RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
         heapLine = new LineRenderer(points);
 	}
 

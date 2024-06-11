@@ -27,6 +27,9 @@ void xsim::RenderRegister::remove(BaseRenderer* renderer) {
 }
 
 void xsim::RenderRegister::drawAll() {
+    
+	RenderRegister::render->clear();
+
     // call draw function of all renderers
     for (auto r : renderers) {
         if (!r->isInit) // TODO: how remove this flag
