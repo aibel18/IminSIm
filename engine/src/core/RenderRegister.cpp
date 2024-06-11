@@ -3,7 +3,7 @@
 #include "util/logger.h"
 
 idl::Render* xsim::RenderRegister::render;
-std::set<xsim::BaseRenderer*> xsim::RenderRegister::renderers;
+std::unordered_set<xsim::BaseRenderer*> xsim::RenderRegister::renderers;
 
 void xsim::RenderRegister::add(BaseRenderer* renderer) {
     // TODO: how use this verification in constructor
