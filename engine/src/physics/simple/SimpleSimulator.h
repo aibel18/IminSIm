@@ -1,7 +1,7 @@
 #ifndef XSIM_SIMPLE_SIMULATOR_H
 #define XSIM_SIMPLE_SIMULATOR_H
 
-#include "core/SimulatorBase.h"
+#include "physics/SimulatorBase.h"
 
 namespace xsim {
 
