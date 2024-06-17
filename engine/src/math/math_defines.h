@@ -9,7 +9,7 @@
 template <u32 L, typename T>
 struct vec {
     vec() {
-        for (size_t i = 0; i < L; i++) {
+        for (u32 i = 0; i < L; i++) {
             elements[i] = 0;
         }
     }
