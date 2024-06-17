@@ -2,12 +2,12 @@
 #define XSIM_SIMULATOR_REGISTER_H
 
 #include "defines.h"
-#include "SimulatorBase.h"
+#include "physics/SimulatorBase.h"
 
 namespace xsim {
 
     class XSIM_API SimulatorRegister {
-    private:
+    public:
         static SimulatorBase* simulator;
     public:
         static void simulate(bool paused);

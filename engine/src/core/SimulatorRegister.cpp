@@ -9,6 +9,8 @@ void xsim::SimulatorRegister::simulate(bool paused) {
 }
 
 void xsim::SimulatorRegister::setSimulator(SimulatorBase* newSimulator) {
+    // safely an unique simulator instance
+    SimulatorRegister::cleanUp();
     simulator = newSimulator;
 }
 

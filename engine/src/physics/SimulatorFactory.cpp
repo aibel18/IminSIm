@@ -3,9 +3,6 @@
 #include "simple/SimpleSimulator.h"
 
 void xsim::SimulatorFactory::createInstance(SimulatorType type) {
-
-    SimulatorRegister::cleanUp();
-
     // Register the simulators
     switch (type) {
         default:
