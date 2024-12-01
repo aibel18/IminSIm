@@ -78,6 +78,7 @@ bool xsim::Application::run() {
 		idl::process_events(window);
 
 		game->update();
+        RenderRegister::initAll();
         RenderRegister::drawAll();
 
 		context->swapInterval(window);

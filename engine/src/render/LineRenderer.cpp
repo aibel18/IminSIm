@@ -6,10 +6,12 @@ xsim::LineRenderer::LineRenderer(std::vector<float>& points) : vao(0), vbo(0) {
         return;
     this->data.resize(points.size() / 3);
     memcpy(this->data.data(), points.data(), sizeof(float) * points.size());
+    LOG_DEBUG("Created LineRenderer: %p", this);
 }
 
 xsim::LineRenderer::LineRenderer(std::vector<vec3>& points) : vao(0), vbo(0) {
     this->data = points;
+    LOG_DEBUG("Created LineRenderer: %p", this);
 }
 
 xsim::LineRenderer::~LineRenderer() {

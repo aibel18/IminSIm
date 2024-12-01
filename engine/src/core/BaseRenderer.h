@@ -15,8 +15,6 @@ namespace xsim {
 		virtual void draw() = 0;
 
     private:
-        bool isInit;
-        void initSuper();
 
 		friend class RenderRegister;
 	};
