@@ -8,6 +8,11 @@ void xsim::SimulatorRegister::simulate(bool paused) {
         simulator->step();
 }
 
+void xsim::SimulatorRegister::sync(bool paused) {
+    if (simulator && paused)
+        simulator->updateOutPosition();
+}
+
 void xsim::SimulatorRegister::setSimulator(SimulatorBase* newSimulator) {
     // safely an unique simulator instance
     SimulatorRegister::cleanUp();

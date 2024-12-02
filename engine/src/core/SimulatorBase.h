@@ -2,7 +2,7 @@
 #define XSIM_SIMULATOR_BASE_H
 
 #include "defines.h"
-#include "Particle.h"
+#include "Model.h"
 
 namespace xsim {
 
@@ -12,6 +12,7 @@ namespace xsim {
         virtual ~SimulatorBase() = 0;
 
         void addModel(Model model);
+        void updateOutPosition();
 
     protected:
         std::vector<Model> models;
