@@ -77,6 +77,7 @@ bool xsim::Application::run() {
 
 		game->update();
         SimulatorRegister::simulate(true);
+        SimulatorRegister::sync(true);
         RenderRegister::drawAll();
 
 		context->swapInterval(window);

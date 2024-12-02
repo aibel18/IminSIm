@@ -3,8 +3,6 @@
 
 #include "defines.h"
 #include "core/RenderRegister.h"
-#include <vector>
-#include "math/math_defines.h"
 
 namespace xsim {
 
@@ -18,10 +16,9 @@ namespace xsim {
 		inline int pointSize() const;
         void init() override;
 		void draw() override;
-		void update();
+		void update() override;
 
 	private:
-		std::vector<vec3> data;
 		u32 vao;
 		u32 vbo;
 	};

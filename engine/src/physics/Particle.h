@@ -20,7 +20,5 @@ namespace xsim {
         vec3 acceleration;
     };
 
-    typedef std::vector<Particle> Model;
-
 }  // namespace xsim
 #endif

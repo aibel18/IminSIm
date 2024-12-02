@@ -40,8 +40,7 @@ public:
         heapLine = new LineRenderer(points);
 
         Model model;
-        model.push_back(Particle{.mass = 10,.position = {0.1f, 0.2f, 0.3f}   });
-        model.push_back(Particle{.mass = 1});
+        model.addRenderer(&stackLine);
 
         SimulatorRegister::simulator->addModel(model); // TODO: add a model automatically
     }
@@ -49,30 +48,31 @@ public:
     int iter = 0;
 	void update() {
 
-        if (iter % 400 == 0) {
-            if (heapLine == 0) {
-                heapLine = new LineRenderer(points);
-            } else {
-                delete heapLine;
-                heapLine = 0;
-            }
-        }
-        iter++;
-        auto size = stackLine.pointSize();
-        for (int i = 0; i < size; i++) {
+        // if (iter % 400 == 0) {
+        //     if (heapLine == 0) {
+        //         heapLine = new LineRenderer(points);
+        //     } else {
+        //         delete heapLine;
+        //         heapLine = 0;
+        //     }
+        // }
+        // iter++;
+        // auto size = stackLine.pointSize();
+        // for (int i = 0; i < size; i++) {
 
-            if (stackLine.point(0).x > limit) {
-				stackLine.point(0).x = limit;
-				velocity *= -1;
-			}
-			if (stackLine.point(0).x < -limit) {
-				stackLine.point(0).x = -limit;
-				velocity *= -1;
-			}
+        //     if (stackLine.point(0).x > limit) {
+		// 		stackLine.point(0).x = limit;
+		// 		velocity *= -1;
+		// 	}
+		// 	if (stackLine.point(0).x < -limit) {
+		// 		stackLine.point(0).x = -limit;
+		// 		velocity *= -1;
+		// 	}
 
-			stackLine.point(i).x += velocity;
-        }
-        stackLine.update();
+		// 	stackLine.point(i).x += velocity;
+        // }
+        // stackLine.update();
+        // heapLine->update();
 	}
 
 	void end() {
