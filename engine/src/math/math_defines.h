@@ -2,6 +2,7 @@
 #define MATH_DEFINES_H
 
 #include "idl_defines.h"
+#include <math.h>
 
 // TODO: improve this generic vector.
 
@@ -50,6 +51,30 @@ union vec3 {
         };
     };
 };
+
+vec3 inline operator+(vec3 a, vec3 b) {
+  return {a.x + b.x, a.y + b.y, a.z + b.z};
+}
+vec3 inline operator-(vec3 a, vec3 b) {
+  return {a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+vec3 inline operator*(vec3 a, float e) {
+  return {a.x * e, a.y * e, a.z * e};
+}
+
+vec3 inline operator/(vec3 a, float e) {
+  return {a.x / e, a.y / e, a.z / e};
+}
+
+float inline dot(vec3 a, vec3 b) {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+float inline length(vec3 a, vec3 b) {
+  vec3 c = a - b;
+  return sqrt( dot(c,c) );
+}
 
 // 4 components vector of 32-bit floating-point numbers.
 union vec4 {

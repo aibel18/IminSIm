@@ -22,12 +22,12 @@ public:
 
 	std::vector<vec3> points = {
 	    {-0.0f, 0.0f, 0.0f},
-		{-0.5f, 0.0f, 0.0f},
-		{-0.5f, 1.0f, 0.0f},
-		{0.5f, 1.0f, 0.0f},
-		{0.5f, -1.0f, 0.0f},
-		{0.0f, -1.0f, 0.0f},
-		{0.0f, 0.0f, 0.0f}
+		// {-0.5f, 0.0f, 0.0f},
+		{-0.0f, 0.9f, 0.0f}
+		// {0.5f, 0.9f, 0.0f},
+		// {0.5f, -0.9f, 0.0f},
+		// {0.0f, -0.9f, 0.0f},
+		// {0.0f, 0.0f, 0.0f}
 	};
 
 	float velocity = 0.0009;
@@ -37,7 +37,7 @@ public:
 
 	void init() {
         RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
-        heapLine = new LineRenderer(points);
+        // heapLine = new LineRenderer(points);
 
         Model model;
         model.addRenderer(&stackLine);
