@@ -14,7 +14,7 @@ public:
 		appConf.height = 720;
 
 		// contextConf.type = idl::GraphicRenderType::IDL_OPENGL;
-		contextConf.major = 3;
+		contextConf.major = 2;
 		contextConf.minor = 1;
         
         SimulatorFactory::createInstance();
