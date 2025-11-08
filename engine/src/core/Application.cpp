@@ -2,6 +2,7 @@
 #include "util/logger.h"
 #include <idl_context.h>
 #include "RenderRegister.h"
+#include "SimulatorRegister.h"
 
 using namespace idl;
 
@@ -69,19 +70,18 @@ bool xsim::Application::run() {
 		return false;
 	}
 
-	RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);  // TODO: move this in other side
-
     LOG_DEBUG("Start main loop");
 
 	while (!idl::is_closed(window)) {
-		RenderRegister::render->clear();  // TODO: move this in other side
 		idl::process_events(window);
 
 		game->update();
-        RenderRegister::initAll();
-        RenderRegister::drawAll();
+    SimulatorRegister::simulate(true);
+    SimulatorRegister::sync(true);
+    RenderRegister::initAll();
+    RenderRegister::drawAll();
 
-		context->swapInterval(window);
+    context->swapInterval(window);
 		context->swapBuffers(window);
 	}
     LOG_DEBUG("End main loop");
@@ -92,6 +92,7 @@ bool xsim::Application::run() {
 }
 
 bool xsim::Application::cleanUp() {
+    SimulatorRegister::cleanUp();
     RenderRegister::cleanUp();
 	context->destroyCurrent(window);
 

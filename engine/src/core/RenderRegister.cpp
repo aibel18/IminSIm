@@ -38,6 +38,9 @@ void xsim::RenderRegister::initAll() {
     }
 }
 void xsim::RenderRegister::drawAll() {
+    
+	RenderRegister::render->clear();
+
     // call draw function of all renderers
     for (auto renderer : renderers) {
         renderer->draw();
