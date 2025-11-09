@@ -1,4 +1,5 @@
 #include "SimulatorBase.h"
+#include "util/logger.h"
 
 xsim::SimulatorBase::SimulatorBase() {
 }
@@ -6,7 +7,7 @@ xsim::SimulatorBase::SimulatorBase() {
 xsim::SimulatorBase::~SimulatorBase() {
 }
 
-void xsim::SimulatorBase::addModel(Model model) {
+void xsim::SimulatorBase::addModel(Model& model) {
     models.push_back(model);
 }
 

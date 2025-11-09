@@ -62,6 +62,9 @@ vec3 inline operator-(vec3 a, vec3 b) {
 vec3 inline operator*(vec3 a, float e) {
   return {a.x * e, a.y * e, a.z * e};
 }
+vec3 inline operator*(float e,vec3 a) {
+  return {a.x * e, a.y * e, a.z * e};
+}
 
 vec3 inline operator/(vec3 a, float e) {
   return {a.x / e, a.y / e, a.z / e};
@@ -74,6 +77,10 @@ float inline dot(vec3 a, vec3 b) {
 float inline length(vec3 a, vec3 b) {
   vec3 c = a - b;
   return sqrt( dot(c,c) );
+}
+
+float inline norm(vec3 a) {
+  return sqrt(dot(a, a));
 }
 
 // 4 components vector of 32-bit floating-point numbers.

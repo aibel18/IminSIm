@@ -18,7 +18,11 @@ namespace xsim {
     vec3 position;
     vec3 p_next;
     vec3 velocity;
+    vec3 v_prev;
+    vec3 p_prev;
     vec3 acceleration;
+    float r = 0.005f;
+    // Particle();
     ~Particle();
   };
 
@@ -27,7 +31,10 @@ namespace xsim {
     int indexB;
     f32 d;
 
+    // Constraint();
     ~Constraint();
+
+    
   };
 
 }  // namespace xsim

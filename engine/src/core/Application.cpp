@@ -70,7 +70,7 @@ bool xsim::Application::run() {
 		return false;
 	}
 
-    LOG_DEBUG("Start main loop");
+  LOG_INFO("Start main loop");
 
 	while (!idl::is_closed(window)) {
 		idl::process_events(window);

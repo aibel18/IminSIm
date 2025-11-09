@@ -11,8 +11,13 @@ namespace xsim {
         SimulatorBase();
         virtual ~SimulatorBase() = 0;
 
-        void addModel(Model model);
+        void addModel(Model& model);
         void updateOutPosition();
+
+        float r = 0.f;
+        float s = 0.005f;
+        float stiffness = 0.01f;
+        float dt = 0.005f;
 
     protected:
         std::vector<Model> models;

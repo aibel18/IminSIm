@@ -21,10 +21,12 @@ public:
 	}
 
 	std::vector<vec3> points = {
-	    {-0.0f, 0.0f, 0.0f},
+	    { -0.0f, -0.2f, 0.0f},
+      { -0.0f, -0.0f, 0.0f},
+      { -0.0f, 0.1f, 0.0f},
 		// {-0.5f, 0.0f, 0.0f},
-		{-0.0f, 0.9f, 0.0f}
-		// {0.5f, 0.9f, 0.0f},
+		{-0.0f, 0.5f, 0.0f},
+		{-0.0f, 1.0f, 0.0f}
 		// {0.5f, -0.9f, 0.0f},
 		// {0.0f, -0.9f, 0.0f},
 		// {0.0f, 0.0f, 0.0f}
@@ -42,7 +44,13 @@ public:
         Model model;
         model.addRenderer(&stackLine);
 
+        SimulatorRegister::simulator->stiffness = 0.01f;
+        SimulatorRegister::simulator->s = 0.000f;
+        SimulatorRegister::simulator->dt = 0.001f;
+
         SimulatorRegister::simulator->addModel(model); // TODO: add a model automatically
+
+        // LOG_INFO("Model added %p", &model);
     }
 
     int iter = 0;
