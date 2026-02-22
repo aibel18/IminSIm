@@ -71,25 +71,21 @@ void xsim::SimpleSimulator::step() {
   float h = 0.6;
   // float s = 0.002;
 
+  // HERE position is equal to p_next
   for (auto &model : models) {
     for (int i = 0; i < model.in_particle.size(); i++) {
 
       auto &p = model.in_particle[i];
 
-      auto dist = (h + s) - p.p_next.y;
+      auto dist = p.p_next.y - (h + s);
 
-      auto diff = abs(dist) - p.r;
+      auto diff = p.r - dist;
 
-      if (diff >= 0) {
+      if (diff <= 0 || (p.p_prev.y + p.r) <= h) {
         continue;
       }
 
-      p.p_prev = p.position;
-      p.v_prev = p.velocity;
-
-      // if (p.p_next.y > (h - s) && p.p_next.y < (h + s)) {
-      p.p_next.y = p.p_next.y - diff;  // + 0.001f;
-      // p.p_next.y = h + s - diff;  // + 0.001f;
+      p.p_next.y = p.p_next.y + diff; // correction!
       p.velocity = (p.p_next - p.position) / dt;
       p.position = p.p_next;
       // LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y);
