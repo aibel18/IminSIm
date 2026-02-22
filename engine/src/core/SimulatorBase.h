@@ -14,8 +14,8 @@ namespace xsim {
         void addModel(Model& model);
         void updateOutPosition();
 
+        int s = -1; // particle index for debug
         float r = 0.f;
-        float s = 0.005f;
         float stiffness = 0.01f;
         float dt = 0.005f;
 

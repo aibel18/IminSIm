@@ -20,17 +20,18 @@ public:
         SimulatorFactory::createInstance();
 	}
 
-	std::vector<vec3> points = {
-	    { -0.0f, -0.2f, 0.0f},
-      { -0.0f, -0.0f, 0.0f},
-      { -0.0f, 0.1f, 0.0f},
-		// {-0.5f, 0.0f, 0.0f},
-		{-0.0f, 0.5f, 0.0f},
-		{-0.0f, 1.0f, 0.0f}
-		// {0.5f, -0.9f, 0.0f},
-		// {0.0f, -0.9f, 0.0f},
-		// {0.0f, 0.0f, 0.0f}
-	};
+ std::vector<vec3> points = {
+  { -0.25f, -0.2f, 0.0f},
+  { -0.25f, -0.05f, 0.0f},
+  { -0.25f, 0.1f, 0.0f},
+  {-0.25f, 0.5f, 0.0f},
+  {-0.25f, 1.0f, 0.0f},
+  {-0.05f, 0.8f, 0.0f},
+  {0.1f, 0.95f, 0.0f},
+  {0.1f, 0.58f, 0.0f},
+  {0.1f, 0.25f, 0.0f},
+  {0.1f, 0.05f, 0.0f}
+ };
 
 	float velocity = 0.0009;
 	float limit = 1.0f;
@@ -44,9 +45,9 @@ public:
         Model model;
         model.addRenderer(&stackLine);
 
-        SimulatorRegister::simulator->stiffness = 0.01f;
-        SimulatorRegister::simulator->s = 0.000f;
-        SimulatorRegister::simulator->dt = 0.001f;
+        SimulatorRegister::simulator->stiffness = 0.05f;
+        SimulatorRegister::simulator->s = 6;
+        SimulatorRegister::simulator->dt = 0.005f;
 
         SimulatorRegister::simulator->addModel(model); // TODO: add a model automatically
 
@@ -75,13 +76,13 @@ public:
 		// 	if (stackLine.point(0).x < -limit) {
 		// 		stackLine.point(0).x = -limit;
 		// 		velocity *= -1;
-		// 	}
+			}
 
 		// 	stackLine.point(i).x += velocity;
         // }
         // stackLine.update();
         // heapLine->update();
-	}
+	// }
 
 	void end() {
 	}

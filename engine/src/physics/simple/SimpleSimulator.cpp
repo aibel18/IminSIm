@@ -61,7 +61,7 @@ void xsim::SimpleSimulator::step() {
       // float v_prev = p.velocity.y;
       p.velocity = (p.p_next - p.position) / dt;
       p.position = p.p_next;
-      if (i == size)
+      if (i == s)
         LOG_INFO("%i v %f <- %f p %f <- %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y);
       i++;
       // LOG_INFO("particle[%p] position: %f %f %f", &p, p.position.x, p.position.y, p.position.z);
@@ -69,7 +69,6 @@ void xsim::SimpleSimulator::step() {
   }
 
   float h = 0.6;
-  // float s = 0.002;
 
   // HERE position is equal to p_next
   for (auto &model : models) {
@@ -77,7 +76,7 @@ void xsim::SimpleSimulator::step() {
 
       auto &p = model.in_particle[i];
 
-      auto dist = p.p_next.y - (h + s);
+      auto dist = p.p_next.y - h;
 
       auto diff = p.r - dist;
 
@@ -88,9 +87,9 @@ void xsim::SimpleSimulator::step() {
       p.p_next.y = p.p_next.y + diff; // correction!
       p.velocity = (p.p_next - p.position) / dt;
       p.position = p.p_next;
-      // LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y);
-      LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y, diff);
-      // }
+      
+      if (i == s)
+        LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y, diff);
     }
   }
 }
