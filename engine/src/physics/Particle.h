@@ -21,7 +21,7 @@ namespace xsim {
     vec3 v_prev;
     vec3 p_prev;
     vec3 acceleration;
-    float r = 0.005f;
+    float r = 0.00f;
     // Particle();
     ~Particle();
   };

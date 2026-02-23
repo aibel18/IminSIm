@@ -80,7 +80,7 @@ void xsim::SimpleSimulator::step() {
 
       auto diff = p.r - dist;
 
-      if (diff <= 0 || (p.p_prev.y + p.r) <= h) {
+      if (diff <= 0 || (p.p_prev.y + p.r) < h) {
         continue;
       }
 
