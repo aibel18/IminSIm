@@ -52,6 +52,10 @@ union vec3 {
     };
 };
 
+// vec3 inline operator+(vec3 a, float b) {
+//   return 
+// }
+
 vec3 inline operator+(vec3 a, vec3 b) {
   return {a.x + b.x, a.y + b.y, a.z + b.z};
 }

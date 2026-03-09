@@ -11,16 +11,17 @@ namespace xsim {
         SimulatorBase();
         virtual ~SimulatorBase() = 0;
 
-        void addModel(Model& model);
+        int addModel(Model& model);
         void updateOutPosition();
 
         int s = -1; // particle index for debug
         float r = 0.f;
         float stiffness = 0.01f;
+        float h = 0.6f;
         float dt = 0.005f;
 
-    protected:
         std::vector<Model> models;
+    protected:
         virtual void init() = 0;
         virtual void step() = 0;
 

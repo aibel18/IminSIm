@@ -68,8 +68,6 @@ void xsim::SimpleSimulator::step() {
     }
   }
 
-  float h = 0.6;
-
   // HERE position is equal to p_next
   for (auto &model : models) {
     for (int i = 0; i < model.in_particle.size(); i++) {

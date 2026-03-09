@@ -7,8 +7,10 @@ xsim::SimulatorBase::SimulatorBase() {
 xsim::SimulatorBase::~SimulatorBase() {
 }
 
-void xsim::SimulatorBase::addModel(Model& model) {
-    models.push_back(model);
+int xsim::SimulatorBase::addModel(Model& model) {
+  int id = models.size();
+  models.push_back(model);
+  return id;
 }
 
 void xsim::SimulatorBase::updateOutPosition() {
