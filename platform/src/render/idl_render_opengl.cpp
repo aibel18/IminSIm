@@ -64,8 +64,9 @@ void idl::RenderOpenGL::updateData(u32 &vbo, float *data, int size_bytes) {
 void idl::RenderOpenGL::drawData(u32 &vao, int count) {
 	glBindVertexArray(vao);  // bind VAO
 
+  glPointSize(10.f);
 	glEnableVertexAttribArray(0);           // enable attribute 0.
-	glDrawArrays(GL_LINE_STRIP, 0, count);  // Starting from vertex 0; count vertices total
+	glDrawArrays(GL_POINTS, 0, count);  // Starting from vertex 0; count vertices total
 	glDisableVertexAttribArray(0);          // disable attribute 0.
 
 	glBindVertexArray(0);  // unbind VAO

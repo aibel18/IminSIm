@@ -7,18 +7,35 @@
 
 namespace xsim {
 
-    struct XSIM_API Particle {
-        f32 mass;
+  struct XSIM_API Particle {
+    f32 mass;
 
-        // scalar vars
-        f32 density;
-        f32 pressure;
+    // scalar vars
+    f32 density;
+    f32 pressure;
 
-        // vectorial vars
-        vec3 position;
-        vec3 velocity;
-        vec3 acceleration;
-    };
+    // vectorial vars
+    vec3 position;
+    vec3 p_next;
+    vec3 velocity;
+    vec3 v_prev;
+    vec3 p_prev;
+    vec3 acceleration;
+    float r = 0.00f;
+    // Particle();
+    ~Particle();
+  };
+
+  struct XSIM_API Constraint {
+    int indexA;
+    int indexB;
+    f32 d;
+
+    // Constraint();
+    ~Constraint();
+
+    
+  };
 
 }  // namespace xsim
 #endif
