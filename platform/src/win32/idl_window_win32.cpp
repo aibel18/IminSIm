@@ -75,8 +75,12 @@ void idl::process_events(idl_window *window) {
 			window->close = true;
 			return;
 		}
+    if (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE) {
+      window->close = true;
+      return;
+    }
 
-		TranslateMessage(&msg);
+    TranslateMessage(&msg);
 		DispatchMessageA(&msg);
 	}
 }

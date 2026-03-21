@@ -59,8 +59,11 @@ void idl::process_events(idl_window* window) {
 			case KeyPress:
 
 				XLookupString(&event.xkey, text, 255, &key, 0);  // TODO: implement input keys
+        if (XLookupKeysym(&event.xkey, 0) == XK_Escape) {
+          window->close = true;
+        }
 
-				break;
+        break;
 
 			case ClientMessage:
 
