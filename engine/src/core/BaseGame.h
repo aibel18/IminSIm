@@ -17,10 +17,10 @@ namespace xsim {
 		virtual ~BaseGame() = 0;
 
 	protected:
-		virtual void init() = 0;
-		virtual void update() = 0;
-		virtual void end() = 0;
-		virtual void onResize(int width, int height) = 0;
+		virtual void init() {};
+		virtual void update() {};
+		virtual void end() {};
+		virtual void onResize(int width, int height) {};
 
 		friend class Application;
 	};

@@ -18,6 +18,20 @@ void idl::RenderOpenGL::setViewPort(int width, int height) {
 	glViewport(0, 0, width, height);
 }
 
+void idl::RenderOpenGL::setOrtoProjection(float left, float right, float bottom, float top, float near, float far) {
+
+	// 2. Switch to Projection Matrix to define our "World Units"
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	// 3. Set the coordinate system: glOrtho(left, right, bottom, top, near, far)
+	glOrtho(left, right, bottom, top, near, far);
+
+	// 4. Switch back to Modelview for drawing
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+}
+
 void idl::RenderOpenGL::clear() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
@@ -62,6 +76,16 @@ void idl::RenderOpenGL::updateData(u32 &vbo, float *data, int size_bytes) {
 }
 
 void idl::RenderOpenGL::drawData(u32 &vao, int count) {
+	glBindVertexArray(vao);  // bind VAO
+
+	glEnableVertexAttribArray(0);           // enable attribute 0.
+	glDrawArrays(GL_LINE_STRIP, 0, count);  // Starting from vertex 0; count vertices total
+	glDisableVertexAttribArray(0);          // disable attribute 0.
+
+	glBindVertexArray(0);  // unbind VAO
+}
+
+void idl::RenderOpenGL::drawPointData(u32 &vao, int count) {
 	glBindVertexArray(vao);  // bind VAO
 
   glPointSize(10.f);
