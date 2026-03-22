@@ -36,6 +36,37 @@ union vec2 {
     };
 };
 
+vec2 inline operator+(vec2 a, vec2 b) {
+  return {a.x + b.x, a.y + b.y};
+}
+vec2 inline operator-(vec2 a, vec2 b) {
+  return {a.x - b.x, a.y - b.y};
+}
+
+vec2 inline operator*(vec2 a, float e) {
+  return {a.x * e, a.y * e};
+}
+vec2 inline operator*(float e,vec2 a) {
+  return {a.x * e, a.y * e};
+}
+
+vec2 inline operator/(vec2 a, float e) {
+  return {a.x / e, a.y / e};
+}
+
+float inline dot(vec2 a, vec2 b) {
+  return a.x * b.x + a.y * b.y;
+}
+
+float inline length(vec2 a, vec2 b) {
+  vec2 c = a - b;
+  return sqrt( dot(c,c) );
+}
+
+float inline norm(vec2 a) {
+  return sqrt(dot(a, a));
+}
+
 // 3 components vector of 32-bit floating-point numbers.
 union vec3 {
     f32 elements[3];  // An array of x, y, z.
