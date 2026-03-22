@@ -52,26 +52,21 @@ DEBUG=false
 mkdir -p "$OUT"
 mkdir -p "$BUILD"
 
-while getopts :pelar option;
-do
-	case "$option" in
-		p) # build platform
-			Platform
-			exit;;
-		e) # build engine
-			Engine
-			exit;;
-		l) # build launcher
-			Launcher
-			exit;;
-		a) # build all
-			All
-			exit;;
-        r) # run
-			Run
-			exit;;
-		(\?) # no parameter
-			echo "Error: Invalid option"
-			exit;;
-	esac
+while getopts :pelar option; do
+  case "$option" in
+    p) # build platform
+      Platform ;;
+    e) # build engine
+      Engine ;;
+    l) # build launcher
+      Launcher ;;
+    a) # build all
+      All ;;
+    r) # run
+      Run
+      exit;;
+    (\?) # no parameter
+      echo "Error: Invalid option -$OPTARG" >&2
+      exit 1;;
+  esac
 done
