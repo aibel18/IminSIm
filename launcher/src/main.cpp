@@ -4,6 +4,7 @@
 #include "core/SimulatorRegister.h" // TODO: improve call to headers
 #include "physics/SimulatorFactory.h"
 #include "physics/Particle.h"
+#include "demos/mars_land.h"
 
 class MyGame : public BaseGame {
 
@@ -155,5 +156,6 @@ public:
 };
 
 BaseGame* createGame() {
-    return new MyGame;
+    // return new MyGame;
+    return new MarsLand();
 }
