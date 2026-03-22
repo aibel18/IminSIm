@@ -74,11 +74,11 @@ vec3 v = {0, 0, 0};
 
 void MarsLand::init() {
   RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
-  heapLine = new LineRenderer(land2);
+  heapLine = new LineRenderer(land1);
   heapPoint = new PointRenderer(rocket);
 
   p = rocket[0];
-  v = {10, -5};
+  v = {20, -5};
   findGoal(heapLine->data);
 }
 
@@ -91,6 +91,9 @@ void MarsLand::update() {
   v = v + acc * dt;
   p = p + v * dt;
 
+  if( verifySolution(p, v, angle) ) {
+    LOG_INFO(">>>>> Congrats!!");
+  }
   heapPoint->point(0) = vec3{p.x, p.y, 0};
   heapPoint->update();
 }

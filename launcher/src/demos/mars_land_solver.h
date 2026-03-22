@@ -40,8 +40,8 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
       if (p.x < 0 || p.x > 6999 || p.y < 0 || p.y > 2999)
         continue;
 
-      // v = v + a * time;
-      v = (p - ini_p) / time;
+      v = ini_v + a * time;
+      // v = (p - ini_p) / time;
 
       float B = 1;
       float m = ((float)(p.y - ini_p.y)) / (p.x - ini_p.x);
@@ -69,7 +69,12 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
         }
       }
       auto dist = norm(p - goal);
-      double error = dist * 2.0 + collision * 100000 + collision2 * 50000 + ini_v.x * ini_v.x * 0.26 + ini_v.y * ini_v.y * 0.26;
+      // TODO: improve the velocity contraint
+      // float fact_v_x = abs(v.x) < 18 ? 0 : v.x * v.x * 0.5;
+      // float fact_v_y = abs(v.y) < 40 ? 0 : v.y * v.y * 0.25;
+      // float velocityConstraint = fact_v_x + fact_v_y;
+      float velocityConstraint = v.x * v.x * 0.28 + v.y * v.y * 0.26;
+      double error = dist * 2.0 + collision * 100000 + collision2 * 50000 + velocityConstraint;
       if (minError > error) {
         minError = error;
         angle = r;
@@ -129,4 +134,19 @@ void solve(vec3 p, vec3 v, vec3 g, int &angle, int &power) {
     angle = res.angle;
     power = res.power;
   }
+}
+
+bool verifySolution(vec3 p, vec3 v, int angle) {
+
+  if (p.x < flat_ground_i || p.x > flat_ground_f)
+    return false;
+
+  if (p.y > goal.y)
+    return false;
+
+  if( angle == 0 && abs(v.x) <= 20 && abs(v.y) <= 40){
+    return true;
+  }
+  LOG_INFO("a: %i, vx: %f, vy: %f", angle, v.x, v.y);
+  return false;
 }
