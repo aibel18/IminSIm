@@ -64,6 +64,31 @@ std::vector<vec3> land2 = {
     {6999, 1750, 0.0f}
 };
 
+std::vector<vec3> land3 = {
+    {   0,  1000, 0.0f},
+    { 300,  2500, 0.0f},
+    {1000,  2500, 0.0f},
+    {1500,  2000, 0.0f},
+    {1800,  850, 0.0f},
+    {2000, 1950, 0.0f},
+    {2200, 1850, 0.0f},
+    {2400, 2000, 0.0f},
+    {3100, 1800, 0.0f},
+    {3150, 1550, 0.0f},
+    {2500, 1600, 0.0f},
+    {2200, 1550, 0.0f},
+    {2100,  900, 0.0f},
+    {2200,  1050, 0.0f},
+    {3200,  150, 0.0f},
+    {3500,  450, 0.0f},
+    {4000,  950, 0.0f},
+    {4500, 1450, 0.0f},
+    {5000, 1550, 0.0f},
+    {5500, 1500, 0.0f},
+    {6000,  950, 0.0f},
+    {6999, 1750, 0.0f}
+};
+
 LineRenderer* heapLine;
 PointRenderer* heapPoint;
 
@@ -74,11 +99,11 @@ vec3 v = {0, 0, 0};
 
 void MarsLand::init() {
   RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
-  heapLine = new LineRenderer(land1);
+  heapLine = new LineRenderer(land3);
   heapPoint = new PointRenderer(rocket);
 
   p = rocket[0];
-  v = {20, -5};
+  // v = {20, -5};
   findGoal(heapLine->data);
 }
 

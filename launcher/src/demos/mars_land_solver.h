@@ -18,12 +18,18 @@ int logistical(float h) {
   return floor(b + (a - b) / (1 + (h / center) * (h / center)));
 }
 
+bool interseptionOnLine(float &A, float& B, float&C, float x1, float y1, float x2, float y2) {
+  float v1 = (A * x1 + B * y1 + C );
+  float v2 = (A * x2 + B * y2 + C );
+  return v1 * v2 <= 0;
+}
+
 vec3 acceleration(int angle, int power, vec3 gravity) {
   constexpr float fact_to_radiam = 3.1416f / 180;
   float angle_radian = angle * fact_to_radiam;
   return gravity + vec3{-sin(angle_radian) * power, cos(angle_radian) * power, 0.0f}; 
 }
-
+int flat_ground_i, flat_ground_f;
 auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<seg>* surface) {
   float minError = 10000000000.0f;
   int angle = 0;
@@ -43,38 +49,47 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
       v = ini_v + a * time;
       // v = (p - ini_p) / time;
 
-      float B = 1;
-      float m = ((float)(p.y - ini_p.y)) / (p.x - ini_p.x);
-      float A = -m;
-      float C = m * ini_p.x - ini_p.y;
+      float A = ini_p.y - p.y;
+      float B = p.x - ini_p.x;
+      float C = ini_p.x * p.y - p.x * ini_p.y;
 
-      float B2 = 1;
-      float m2 = ((float)(goal.y - p.y)) / (goal.x - p.x);
-      float A2 = -m2;
-      float C2 = m2 * p.x - p.y;
+      float A2 = p.y - goal.y;
+      float B2 = goal.x - p.x;
+      float C2 = p.x * goal.y - goal.x * p.y;
 
       int collision = 0, collision2 = 0;
       for (auto s : *surface) {
-        float p1 = s.x1 * A + s.y1 * B + C;
-        float p2 = s.x2 * A + s.y2 * B + C;
 
-        float p12 = s.x1 * A2 + s.y1 * B2 + C2;
-        float p22 = s.x2 * A2 + s.y2 * B2 + C2;
+        float A3 = s.y1 - s.y2;
+        float B3 = s.x2 - s.x1;
+        float C3 = s.x1 * s.y2 - s.x2 * s.y1;
 
-        if (p1 * p2 < 0) {
+        // Evaluate s1 and s2 against line ini_p,p
+        auto v1 = interseptionOnLine(A, B, C, s.x1, s.y1, s.x2, s.y2);
+        // Evaluate s1 and s2 against line p,goal
+        auto v2 = interseptionOnLine(A2, B2, C2, s.x1, s.y1, s.x2, s.y2);
+
+        // Evaluate ini_p and p against line s1,s2
+        // auto v3 = interseptionOnLine(A3, B3, C3, ini_p.x, ini_p.y, p.x, p.y);
+        // Evaluate p and goal against line s1,s2
+        auto v4 = interseptionOnLine(A3, B3, C3, p.x, p.y, goal.x, goal.y);
+
+        if (v1) {
           collision++;
         }
-        if (p12 * p22 < 0) {
+        if (v2 && v4) {
           collision2++;
         }
       }
-      auto dist = norm(p - goal);
+      auto dist = p - goal;        
+      float goalConstraint = norm(dist) * 2.0f;
       // TODO: improve the velocity contraint
       // float fact_v_x = abs(v.x) < 18 ? 0 : v.x * v.x * 0.5;
       // float fact_v_y = abs(v.y) < 40 ? 0 : v.y * v.y * 0.25;
       // float velocityConstraint = fact_v_x + fact_v_y;
       float velocityConstraint = v.x * v.x * 0.28 + v.y * v.y * 0.26;
-      double error = dist * 2.0 + collision * 100000 + collision2 * 50000 + velocityConstraint;
+      float collisionConstraint = collision * 50000000 + collision2 * 500000;
+      double error = goalConstraint + collisionConstraint + velocityConstraint;
       if (minError > error) {
         minError = error;
         angle = r;
@@ -83,13 +98,12 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
     }
   }
   time = logistical(minError);
-  // LOG_DEBUG("error: %f -> time: %i", minError, time);
+  LOG_INFO("t:%i \t a:%i \t e: %f", time, angle, minError);
 
   return Result{angle, power, time};
 }
 
 std::vector<seg> surface;
-int flat_ground_i, flat_ground_f;
 vec3 goal;
 void findGoal(std::vector<vec3> &points) {
 
