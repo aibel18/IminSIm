@@ -59,8 +59,8 @@ bool rayCasting(vec3& rayOri, vec3& rayDir, vec3& segA, vec3& segB, vec3& hitPoi
 
 }
 
+constexpr float fact_to_radiam = 3.1416f / 180;
 vec3 acceleration(int angle, int power, vec3 gravity) {
-  constexpr float fact_to_radiam = 3.1416f / 180;
   float angle_radian = angle * fact_to_radiam;
   return gravity + vec3{-sin(angle_radian) * power, cos(angle_radian) * power, 0.0f}; 
 }

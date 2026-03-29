@@ -16,7 +16,13 @@ MarsLand::MarsLand() {
 }
 
 std::vector<vec3> rocket = {
-    {6500, 2600, 0.0f}
+    {  0, 40, 0},
+    { 40,  0, 0},
+    { 40,-40, 0},
+    {  0,  0, 0},
+    {-40,-40, 0},
+    {-40,  0, 0},
+    {  0, 40, 0},
 };
 
 std::vector<vec3> land1 = {
@@ -90,7 +96,7 @@ std::vector<vec3> land3 = {
 };
 
 LineRenderer* heapLine;
-PointRenderer* heapPoint;
+LineRenderer* heapPoint;
 
 float dt = 0.1f;
 vec3 g = {0, -3.711, 0};
@@ -100,10 +106,10 @@ vec3 v = {0, 0, 0};
 void MarsLand::init() {
   RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
   heapLine = new LineRenderer(land1);
-  heapPoint = new PointRenderer(rocket);
+  heapPoint = new LineRenderer(rocket);
 
-  p = rocket[0];
-  v = {20, -5};
+  p = {6500, 2200, 0.0f};// init position
+  v = {20, -5}; // init velocity
   findGoal(heapLine->data);
 }
 
@@ -118,8 +124,19 @@ void MarsLand::update() {
 
   if( verifySolution(p, v, angle) ) {
     LOG_INFO(">>>>> Congrats!!");
+    return;
   }
-  heapPoint->point(0) = vec3{p.x, p.y, 0};
+
+  float angleRadians = angle * fact_to_radiam;
+  float s = sin(angleRadians);
+  float c = cos(angleRadians);
+
+  for(int i = 0; i < heapPoint->data.size(); i ++ ){
+    float xnew = rocket[i].x * c - rocket[i].y * s + p.x;
+    float ynew = rocket[i].x * s + rocket[i].y * c + p.y;
+    heapPoint->point(i) = {xnew, ynew, 0};
+  }
+  // heapPoint->point(0) = vec3{p.x, p.y, 0};
   heapPoint->update();
 }
 void MarsLand::onResize(int width, int height) {
