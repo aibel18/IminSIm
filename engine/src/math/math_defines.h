@@ -118,6 +118,10 @@ float inline norm(vec3 a) {
   return sqrt(dot(a, a));
 }
 
+vec3 inline normalize(vec3 a) {
+  return a / norm(a);
+}
+
 // 4 components vector of 32-bit floating-point numbers.
 union vec4 {
     f32 elements[4];  // An array of x, y, z, w.

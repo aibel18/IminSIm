@@ -99,11 +99,11 @@ vec3 v = {0, 0, 0};
 
 void MarsLand::init() {
   RenderRegister::render->setClearColor(0.392f, 0.584f, 0.929f);
-  heapLine = new LineRenderer(land3);
+  heapLine = new LineRenderer(land1);
   heapPoint = new PointRenderer(rocket);
 
   p = rocket[0];
-  // v = {20, -5};
+  v = {20, -5};
   findGoal(heapLine->data);
 }
 
