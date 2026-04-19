@@ -33,9 +33,7 @@ namespace xsim {
 
     // Constraint();
     ~Constraint();
-
-    
   };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

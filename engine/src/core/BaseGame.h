@@ -7,23 +7,23 @@
 
 namespace xsim {
 
-	class XSIM_API BaseGame {
-	public:
-		ApplicationConfig appConf;
-		ContextConfig contextConf;
+  class XSIM_API BaseGame {
+  public:
+    ApplicationConfig appConf;
+    ContextConfig contextConf;
 
-	public:
-		BaseGame();
-		virtual ~BaseGame() = 0;
+  public:
+    BaseGame();
+    virtual ~BaseGame() = 0;
 
-	protected:
-		virtual void init() {};
-		virtual void update() {};
-		virtual void end() {};
-		virtual void onResize(int width, int height) {};
+  protected:
+    virtual void init() {};
+    virtual void update() {};
+    virtual void end() {};
+    virtual void onResize(int width, int height) {};
 
-		friend class Application;
-	};
+    friend class Application;
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

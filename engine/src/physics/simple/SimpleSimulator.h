@@ -5,15 +5,15 @@
 
 namespace xsim {
 
-    class SimpleSimulator : public SimulatorBase {
-    public:
-        SimpleSimulator();
-        virtual ~SimpleSimulator();
+  class SimpleSimulator : public SimulatorBase {
+  public:
+    SimpleSimulator();
+    virtual ~SimpleSimulator();
 
-    protected:
-        void step();
-        void init();
-    };
+  protected:
+    void step();
+    void init();
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

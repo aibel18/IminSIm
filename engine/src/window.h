@@ -6,22 +6,22 @@
 
 namespace xsim {
 
-	class XSIM_API Window {
+  class XSIM_API Window {
 
-	private:
-		idl::idl_window* handle;
+  private:
+    idl::idl_window* handle;
 
-	private:
-		const char* name;
-		int width;
-		int height;
+  private:
+    const char* name;
+    int width;
+    int height;
 
-	public:
-		Window(const char* name, int width = 1280, int height = 720);
-		~Window();
-		void run();
-	};
+  public:
+    Window(const char* name, int width = 1280, int height = 720);
+    ~Window();
+    void run();
+  };
 
-}  // namespace xsim
+} // namespace xsim
 
-#endif  // XSIM_WINDOW
+#endif // XSIM_WINDOW

@@ -14,17 +14,17 @@ int logistical(float h) {
   const float a = 1.f;
   const float b = 55.f;
   const float center = 2500.f;
-  
+
   return floor(b + (a - b) / (1 + (h / center) * (h / center)));
 }
 
-bool interseptionOnLine(float &A, float& B, float&C, float x1, float y1, float x2, float y2) {
-  float v1 = (A * x1 + B * y1 + C );
-  float v2 = (A * x2 + B * y2 + C );
+bool interseptionOnLine(float& A, float& B, float& C, float x1, float y1, float x2, float y2) {
+  float v1 = (A * x1 + B * y1 + C);
+  float v2 = (A * x2 + B * y2 + C);
   return v1 * v2 <= 0;
 }
 
-// TODO: move to math folder adn 
+// TODO: move to math folder adn
 bool rayCasting(vec3& rayOri, vec3& rayDir, vec3& segA, vec3& segB, vec3& hitPoint, float& tOut) {
 
   float x1 = segA.x;
@@ -41,7 +41,8 @@ bool rayCasting(vec3& rayOri, vec3& rayDir, vec3& segA, vec3& segB, vec3& hitPoi
   float den = dx * (y2 - y1) - dy * (x2 - x1);
 
   // Parallel lines check
-  if (den == 0) return false;
+  if (den == 0)
+    return false;
 
   // Solve for t and u
   float t = ((x1 - px) * (y2 - y1) - (y1 - py) * (x2 - x1)) / den;
@@ -56,13 +57,12 @@ bool rayCasting(vec3& rayOri, vec3& rayDir, vec3& segA, vec3& segB, vec3& hitPoi
   }
 
   return false;
-
 }
 
 constexpr float fact_to_radiam = 3.1416f / 180;
 vec3 acceleration(int angle, int power, vec3 gravity) {
   float angle_radian = angle * fact_to_radiam;
-  return gravity + vec3{-sin(angle_radian) * power, cos(angle_radian) * power, 0.0f}; 
+  return gravity + vec3{-sin(angle_radian) * power, cos(angle_radian) * power, 0.0f};
 }
 int flat_ground_i, flat_ground_f;
 auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<seg>* surface) {
@@ -88,7 +88,7 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
       float B2 = goal.x - p.x;
       float C2 = p.x * goal.y - goal.x * p.y;
 
-      vec3 dir = normalize( p - ini_p);
+      vec3 dir = normalize(p - ini_p);
 
       int collision = 0, collision2 = 0;
       for (auto s : *surface) {
@@ -98,8 +98,8 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
         vec3 hitPoint;
         float t = 0;
 
-        if( rayCasting(ini_p, dir, s1, s2, hitPoint, t) ) {
-          collision+= t;
+        if (rayCasting(ini_p, dir, s1, s2, hitPoint, t)) {
+          collision += t;
         }
 
         float A3 = s.y1 - s.y2;
@@ -116,7 +116,7 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
           collision2++;
         }
       }
-      auto dist = p - goal;        
+      auto dist = p - goal;
       float goalConstraint = norm(dist) * 2.5f;
       // TODO: improve the velocity contraint
       // float fact_v_x = abs(v.x) < 18 ? 0 : v.x * v.x * 0.5;
@@ -140,7 +140,7 @@ auto heuristic(vec3 goal, vec3 ini_p, vec3 ini_v, vec3 g, int time, std::vector<
 
 std::vector<seg> surface;
 vec3 goal;
-void findGoal(std::vector<vec3> &points) {
+void findGoal(std::vector<vec3>& points) {
 
   surface.clear();
 
@@ -149,8 +149,8 @@ void findGoal(std::vector<vec3> &points) {
   int flat_ground_h;
 
   for (int i = 0; i < points.size(); i++) {
-    int land_x = points[i].x;  // X coordinate of a surface point. (0 to 6999)
-    int land_y = points[i].y;  // Y coordinate of a surface point. By linking all the points
+    int land_x = points[i].x; // X coordinate of a surface point. (0 to 6999)
+    int land_y = points[i].y; // Y coordinate of a surface point. By linking all the points
 
     // pre-calcute lines
     if (i > 0) {
@@ -168,11 +168,10 @@ void findGoal(std::vector<vec3> &points) {
   }
 
   goal = {(flat_ground_f + flat_ground_i) * 0.5f, (float)flat_ground_h, 0.0f};
-
 }
 
 int t = 55; // initial time for prediction
-void solve(vec3 p, vec3 v, vec3 g, int &angle, int &power) {
+void solve(vec3 p, vec3 v, vec3 g, int& angle, int& power) {
   // when the rocket is stable and very close to goal
   if (p.x > flat_ground_i && p.x < flat_ground_f && p.y < goal.y + 200) {
     angle = 0;
@@ -193,7 +192,7 @@ bool verifySolution(vec3 p, vec3 v, int angle) {
   if (p.y > goal.y)
     return false;
 
-  if( angle == 0 && abs(v.x) <= 20 && abs(v.y) <= 40){
+  if (angle == 0 && abs(v.x) <= 20 && abs(v.y) <= 40) {
     return true;
   }
   LOG_INFO("a: %i, vx: %f, vy: %f", angle, v.x, v.y);

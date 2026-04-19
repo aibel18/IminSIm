@@ -6,6 +6,6 @@ xsim::Logger xsim::logger;
 xsim::Logger::Logger() {
 }
 
-void xsim::Logger::write(LogLevel level, const char *line, int size) {
-	idl::console_write(line, size, level);
+void xsim::Logger::write(LogLevel level, const char* line, int size) {
+  idl::console_write(line, size, level);
 }

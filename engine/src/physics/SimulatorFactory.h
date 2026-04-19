@@ -12,5 +12,5 @@ namespace xsim {
     static void createInstance(SimulatorType type = SIMPLE);
   };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

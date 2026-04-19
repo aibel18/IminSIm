@@ -7,20 +7,20 @@ extern BaseGame* createGame();
 
 int main() {
 
-	// Request the game instance
-	BaseGame* game = createGame();
+  // Request the game instance
+  BaseGame* game = createGame();
 
-	if (!game) {
-		LOG_ERROR("Game was not created");
-		return -1;
-	}
+  if (!game) {
+    LOG_ERROR("Game was not created");
+    return -1;
+  }
 
-	Application app(game);
-	if (app.create()) {
-		app.run();
-        delete game;
-        app.cleanUp();
-	}
+  Application app(game);
+  if (app.create()) {
+    app.run();
+    delete game;
+    app.cleanUp();
+  }
 
-	return 0;
+  return 0;
 }

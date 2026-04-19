@@ -11,8 +11,8 @@ vec3 g = {0., -9.8, 0};
 // float dt = 0.005f;
 float eps = 0.001f;
 void xsim::SimpleSimulator::step() {
-  for (auto &model : models) {
-    for (auto &p : model.in_particle) {
+  for (auto& model : models) {
+    for (auto& p : model.in_particle) {
       p.p_prev = p.position;
       p.v_prev = p.velocity;
       p.velocity = p.velocity + g * dt;
@@ -25,10 +25,10 @@ void xsim::SimpleSimulator::step() {
   int iter = 0;
   // float stiffness = 0.01f;
   while (iter < 4) {
-    for (auto &model : models) {
-      for (auto &c : model.constraints) {
-        auto &p1 = model.in_particle[c.indexA];
-        auto &p2 = model.in_particle[c.indexB];
+    for (auto& model : models) {
+      for (auto& c : model.constraints) {
+        auto& p1 = model.in_particle[c.indexA];
+        auto& p2 = model.in_particle[c.indexB];
 
         vec3 dir = p1.p_next - p2.p_next;
         float d = norm(dir);
@@ -53,11 +53,11 @@ void xsim::SimpleSimulator::step() {
     iter++;
   }
 
-  for (auto &model : models) {
+  for (auto& model : models) {
     int size = model.in_particle.size() - 1;
     // auto &pp = model.in_particle[size];
     int i = 0;
-    for (auto &p : model.in_particle) {
+    for (auto& p : model.in_particle) {
       // float v_prev = p.velocity.y;
       p.velocity = (p.p_next - p.position) / dt;
       p.position = p.p_next;
@@ -69,10 +69,10 @@ void xsim::SimpleSimulator::step() {
   }
 
   // HERE position is equal to p_next
-  for (auto &model : models) {
+  for (auto& model : models) {
     for (int i = 0; i < model.in_particle.size(); i++) {
 
-      auto &p = model.in_particle[i];
+      auto& p = model.in_particle[i];
 
       auto dist = p.p_next.y - h;
 
@@ -85,9 +85,10 @@ void xsim::SimpleSimulator::step() {
       p.p_next.y = p.p_next.y + diff; // correction!
       p.velocity = (p.p_next - p.position) / dt;
       p.position = p.p_next;
-      
+
       if (i == s)
-        LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y, p.p_prev.y, diff);
+        LOG_INFO("%i v %f <- %f p %f <- %f <<<<<< %f", i, p.velocity.y, p.v_prev.y, p.position.y,
+                 p.p_prev.y, diff);
     }
   }
 }

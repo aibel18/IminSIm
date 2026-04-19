@@ -5,10 +5,10 @@
 
 namespace xsim {
 
-	class XSIM_API Engine {
-	public:
-		Engine();
-	};
+  class XSIM_API Engine {
+  public:
+    Engine();
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

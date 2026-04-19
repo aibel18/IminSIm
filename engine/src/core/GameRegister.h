@@ -6,10 +6,10 @@
 
 namespace xsim {
 
-	class XSIM_API GameRegister {
-	public:
-		static BaseGame *game;
-	};
+  class XSIM_API GameRegister {
+  public:
+    static BaseGame* game;
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

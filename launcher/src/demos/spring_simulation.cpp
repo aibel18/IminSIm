@@ -2,7 +2,7 @@
 #include "util/logger.h"
 #include "render/PointRenderer.h"
 
-#include "core/SimulatorRegister.h"  // TODO: improve call to headers
+#include "core/SimulatorRegister.h" // TODO: improve call to headers
 #include "physics/SimulatorFactory.h"
 
 SpringSimulation::SpringSimulation() {
@@ -46,7 +46,7 @@ void SpringSimulation::init() {
   xsim::SimulatorRegister::simulator->h = 0.75;
   xsim::SimulatorRegister::simulator->dt = 0.005f;
 
-  modelId = xsim::SimulatorRegister::simulator->addModel(model);  // TODO: add a model automatically
+  modelId = xsim::SimulatorRegister::simulator->addModel(model); // TODO: add a model automatically
 
   float dis = 0.3f;
   // compute simple linear blend skinning
@@ -67,8 +67,8 @@ void SpringSimulation::init() {
     }
     for (int k = 0; k < weigthsIds[i].size(); k++) {
       weigths[i][k] = weigths[i][k] / sum;
-      LOG_INFO(
-          "%i -> (%f %f %f) %f", weigthsIds[i][k], distances[i][k].x, distances[i][k].y, distances[i][k].z, weigths[i][k]);
+      LOG_INFO("%i -> (%f %f %f) %f", weigthsIds[i][k], distances[i][k].x, distances[i][k].y,
+               distances[i][k].z, weigths[i][k]);
     }
     LOG_INFO(">>>>>%f", sum);
   }
@@ -77,8 +77,8 @@ void SpringSimulation::init() {
 
   auto& m = xsim::SimulatorRegister::simulator->models[modelId];
   auto& p_last = m.in_particle[points.size() - 1];
-  p_last.position.x += 0.02f;  // add force in x
-  p_last.position.z += 0.01f;  // add force in z
+  p_last.position.x += 0.02f; // add force in x
+  p_last.position.z += 0.01f; // add force in z
 }
 
 void SpringSimulation::update() {

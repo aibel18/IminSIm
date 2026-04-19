@@ -7,18 +7,18 @@
 
 namespace xsim {
 
-    class XSIM_API Model {
-    public:
-        std::vector<Particle> in_particle;
-        std::vector<Constraint> constraints;
-        std::vector<vec3> out_position;
-        BaseRenderer* renderer;
+  class XSIM_API Model {
+  public:
+    std::vector<Particle> in_particle;
+    std::vector<Constraint> constraints;
+    std::vector<vec3> out_position;
+    BaseRenderer* renderer;
 
-        void addParticle(Particle);
-        void addRenderer(BaseRenderer*);
+    void addParticle(Particle);
+    void addRenderer(BaseRenderer*);
 
-        ~Model();
-    };
+    ~Model();
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

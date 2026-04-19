@@ -5,15 +5,15 @@
 
 namespace xsim {
 
-	struct ContextConfig {
-		// Render Type
-		// idl::GraphicRenderType type; // TODO: define type on engine
+  struct ContextConfig {
+    // Render Type
+    // idl::GraphicRenderType type; // TODO: define type on engine
 
-		// Context major version
-		int major;
+    // Context major version
+    int major;
 
-		// Context minor version
-		int minor;
-	};
-}  // namespace xsim
+    // Context minor version
+    int minor;
+  };
+} // namespace xsim
 #endif

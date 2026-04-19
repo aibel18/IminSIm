@@ -6,16 +6,16 @@
 
 namespace xsim {
 
-	class XSIM_API Application {
-	private:
-		BaseGame* game;
+  class XSIM_API Application {
+  private:
+    BaseGame* game;
 
-	public:
-		Application(BaseGame* game);
-		~Application();
-		bool create();
-		bool run();
-        bool cleanUp();
-	};
-}  // namespace xsim
+  public:
+    Application(BaseGame* game);
+    ~Application();
+    bool create();
+    bool run();
+    bool cleanUp();
+  };
+} // namespace xsim
 #endif

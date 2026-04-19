@@ -5,15 +5,15 @@
 
 namespace xsim {
 
-	struct ApplicationConfig {
-		// Application name used in windowing
-		const char* name;
+  struct ApplicationConfig {
+    // Application name used in windowing
+    const char* name;
 
-		// Window initial width
-		int width;
+    // Window initial width
+    int width;
 
-		// Window initial height
-		int height;
-	};
-}  // namespace xsim
+    // Window initial height
+    int height;
+  };
+} // namespace xsim
 #endif

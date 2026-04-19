@@ -25,7 +25,7 @@ void xsim::Model::addRenderer(BaseRenderer* renderer) {
     // Constraint c;
     // c.indexA = i;
     // c.indexB = i + 1;
-    float d = length(in_particle[i].position, in_particle[i+1].position);
+    float d = length(in_particle[i].position, in_particle[i + 1].position);
     constraints.push_back(Constraint{.indexA = i, .indexB = i + 1, .d = d});
   }
   std::cout << ">>>> " << constraints.size() << std::endl;

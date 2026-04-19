@@ -7,21 +7,21 @@
 
 namespace xsim {
 
-	class XSIM_API BaseRenderer {
-	public:
-		BaseRenderer();
-		virtual ~BaseRenderer() = 0;
+  class XSIM_API BaseRenderer {
+  public:
+    BaseRenderer();
+    virtual ~BaseRenderer() = 0;
 
-		std::vector<vec3> data;
-		virtual void update() = 0;
-	protected:
-		virtual void init() = 0;
-		virtual void draw() = 0;
+    std::vector<vec3> data;
+    virtual void update() = 0;
 
-    private:
+  protected:
+    virtual void init() = 0;
+    virtual void draw() = 0;
 
-		friend class RenderRegister;
-	};
+  private:
+    friend class RenderRegister;
+  };
 
-}  // namespace xsim
+} // namespace xsim
 #endif

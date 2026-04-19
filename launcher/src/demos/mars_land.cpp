@@ -16,13 +16,13 @@ MarsLand::MarsLand() {
 }
 
 std::vector<vec3> rocket = {
-    {  0, 40, 0},
-    { 40,  0, 0},
-    { 40,-40, 0},
-    {  0,  0, 0},
-    {-40,-40, 0},
-    {-40,  0, 0},
-    {  0, 40, 0},
+    {  0,  40, 0},
+    { 40,   0, 0},
+    { 40, -40, 0},
+    {  0,   0, 0},
+    {-40, -40, 0},
+    {-40,   0, 0},
+    {  0,  40, 0},
 };
 
 std::vector<vec3> land1 = {
@@ -71,10 +71,10 @@ std::vector<vec3> land2 = {
 };
 
 std::vector<vec3> land3 = {
-    {   0,  1000, 0.0f},
-    { 300,  2500, 0.0f},
-    {1000,  2500, 0.0f},
-    {1500,  2000, 0.0f},
+    {   0, 1000, 0.0f},
+    { 300, 2500, 0.0f},
+    {1000, 2500, 0.0f},
+    {1500, 2000, 0.0f},
     {1800,  850, 0.0f},
     {2000, 1950, 0.0f},
     {2200, 1850, 0.0f},
@@ -84,7 +84,7 @@ std::vector<vec3> land3 = {
     {2500, 1600, 0.0f},
     {2200, 1550, 0.0f},
     {2100,  900, 0.0f},
-    {2200,  1050, 0.0f},
+    {2200, 1050, 0.0f},
     {3200,  150, 0.0f},
     {3500,  450, 0.0f},
     {4000,  950, 0.0f},
@@ -108,8 +108,8 @@ void MarsLand::init() {
   heapLine = new LineRenderer(land1);
   heapPoint = new LineRenderer(rocket);
 
-  p = {6500, 2200, 0.0f};// init position
-  v = {20, -5}; // init velocity
+  p = {6500, 2200, 0.0f}; // init position
+  v = {20, -5};           // init velocity
   findGoal(heapLine->data);
 }
 
@@ -122,7 +122,7 @@ void MarsLand::update() {
   v = v + acc * dt;
   p = p + v * dt;
 
-  if( verifySolution(p, v, angle) ) {
+  if (verifySolution(p, v, angle)) {
     LOG_INFO(">>>>> Congrats!!");
     return;
   }
@@ -131,7 +131,7 @@ void MarsLand::update() {
   float s = sin(angleRadians);
   float c = cos(angleRadians);
 
-  for(int i = 0; i < heapPoint->data.size(); i ++ ){
+  for (int i = 0; i < heapPoint->data.size(); i++) {
     float xnew = rocket[i].x * c - rocket[i].y * s + p.x;
     float ynew = rocket[i].x * s + rocket[i].y * c + p.y;
     heapPoint->point(i) = {xnew, ynew, 0};

@@ -4,23 +4,23 @@
 xsim::SimulatorBase* xsim::SimulatorRegister::simulator;
 
 void xsim::SimulatorRegister::simulate(bool paused) {
-    if (simulator && paused)
-        simulator->step();
+  if (simulator && paused)
+    simulator->step();
 }
 
 void xsim::SimulatorRegister::sync(bool paused) {
-    if (simulator && paused)
-        simulator->updateOutPosition();
+  if (simulator && paused)
+    simulator->updateOutPosition();
 }
 
 void xsim::SimulatorRegister::setSimulator(SimulatorBase* newSimulator) {
-    // safely an unique simulator instance
-    SimulatorRegister::cleanUp();
-    simulator = newSimulator;
+  // safely an unique simulator instance
+  SimulatorRegister::cleanUp();
+  simulator = newSimulator;
 }
 
 void xsim::SimulatorRegister::cleanUp() {
-    if (simulator) {
-        delete simulator;
-    }
+  if (simulator) {
+    delete simulator;
+  }
 }

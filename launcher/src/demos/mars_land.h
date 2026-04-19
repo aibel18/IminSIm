@@ -9,12 +9,12 @@
 
 class MarsLand : public xsim::BaseGame {
 
-  public:
-    MarsLand();
-    
-    void init() override;
-    void update() override;
-    void onResize(int width, int height) override;
+public:
+  MarsLand();
+
+  void init() override;
+  void update() override;
+  void onResize(int width, int height) override;
 };
 
 #endif

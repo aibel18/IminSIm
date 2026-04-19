@@ -5,12 +5,12 @@
 
 namespace idl {
 
-	struct idl_window;
+  struct idl_window;
 
-	IDL_API idl_window* create_window(const char* name, int width, int height);
-	IDL_API void process_events(idl_window* window);
-	IDL_API void destroy_window(idl_window* window);
-	IDL_API bool is_closed(idl_window* window);
+  IDL_API idl_window* create_window(const char* name, int width, int height);
+  IDL_API void process_events(idl_window* window);
+  IDL_API void destroy_window(idl_window* window);
+  IDL_API bool is_closed(idl_window* window);
 
-}  // namespace idl
+} // namespace idl
 #endif
