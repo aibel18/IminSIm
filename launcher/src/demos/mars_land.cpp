@@ -8,7 +8,7 @@
 using namespace xsim;
 
 MarsLand::MarsLand() {
-  appConf.name = "Xsim Launcher";
+  appConf.name = "Mars Land";
   appConf.width = 900;
   appConf.height = 720;
 

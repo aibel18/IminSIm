@@ -5,15 +5,12 @@
 
 namespace xsim {
 
-    enum SimulatorType {
-		SIMPLE,
-		PBD
-	};
+  enum SimulatorType { SIMPLE, PBD };
 
-    class XSIM_API SimulatorFactory {
-    public:
-        static void createInstance(SimulatorType type = SIMPLE);
-    };
+  class XSIM_API SimulatorFactory {
+  public:
+    static void createInstance(SimulatorType type = SIMPLE);
+  };
 
 }  // namespace xsim
 #endif

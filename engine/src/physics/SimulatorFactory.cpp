@@ -3,9 +3,9 @@
 #include "simple/SimpleSimulator.h"
 
 void xsim::SimulatorFactory::createInstance(SimulatorType type) {
-    // Register the simulators
-    switch (type) {
-        default:
-            SimulatorRegister::setSimulator(new SimpleSimulator());
-    }
+  // Register the simulators
+  switch (type) {
+    default:
+      SimulatorRegister::setSimulator(new SimpleSimulator());
+  }
 }
