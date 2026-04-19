@@ -5,6 +5,10 @@
 #include "core/SimulatorRegister.h" // TODO: improve call to headers
 #include "physics/SimulatorFactory.h"
 
+#include "math/octree.h"
+
+Octree octree(2);
+
 SpringSimulation::SpringSimulation() {
   appConf.name = "Spring Simulation";
   appConf.width = 900;
@@ -14,21 +18,6 @@ SpringSimulation::SpringSimulation() {
 
   xsim::SimulatorFactory::createInstance();
 }
-
-std::vector<vec3> vertices = {
-    {-0.1f,  -0.2f, 0.0f},
-    {-0.1f, -0.05f, 0.0f},
-    {-0.1f,   0.1f, 0.0f},
-    {-0.1f,   0.5f, 0.0f},
-    {-0.1f,   1.0f, 0.0f},
-    {-0.1f,   1.2f, 0.0f},
-    { 0.1f,   1.2f, 0.0f},
-    { 0.1f,   1.0f, 0.0f},
-    { 0.1f,   0.5f, 0.0f},
-    { 0.1f,   0.1f, 0.0f},
-    { 0.1f, -0.05f, 0.0f},
-    { 0.1f,  -0.2f, 0.0f}
-};
 
 std::vector<std::vector<float>> weigths;
 std::vector<std::vector<int>> weigthsIds;
@@ -44,7 +33,7 @@ void SpringSimulation::init() {
   xsim::SimulatorRegister::simulator->stiffness = 0.01f;
   // SimulatorRegister::simulator->s = ;
   xsim::SimulatorRegister::simulator->h = 0.75;
-  xsim::SimulatorRegister::simulator->dt = 0.005f;
+  xsim::SimulatorRegister::simulator->dt = 0.01f;
 
   modelId = xsim::SimulatorRegister::simulator->addModel(model); // TODO: add a model automatically
 
@@ -83,6 +72,8 @@ void SpringSimulation::init() {
 
 void SpringSimulation::update() {
 
+  octree.clear();
+
   auto& m = xsim::SimulatorRegister::simulator->models[modelId];
   // int size = m.in_particle.size();
   // for (int i = 0; i < size ; i++) {
@@ -91,11 +82,20 @@ void SpringSimulation::update() {
   // }
   auto size = stackLine2.pointSize();
   for (int i = 0; i < size; i++) {
+
     vec3 totMove = {0, 0, 0};
     for (int k = 0; k < weigths[i].size(); k++) {
       totMove = totMove + weigths[i][k] * (m.in_particle[weigthsIds[i][k]].position + distances[i][k]);
     }
     stackLine2.point(i) = totMove;
+    octree.insert(totMove, i);
   }
+  octree.numElements();
   stackLine2.update();
+}
+
+void SpringSimulation::onResize(int width, int height) {
+  // xsim::RenderRegister::render->setViewPort(width, height);
+  // xsim::RenderRegister::render->setOrtoProjection(0, width, 0, height);
+  xsim::RenderRegister::render->setOrtoProjection(-2, 2, -2, 2);
 }
