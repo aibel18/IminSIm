@@ -17,6 +17,22 @@ struct AABB {
   int index;
   vec3 min;
   vec3 max;
+
+  inline bool intersects(vec3 min_, vec3 max_) {
+    if (min.x > max_.x || max.x < min_.x || min.y > max_.y || max.y < min_.y || min.z > max_.z ||
+        max.z < min_.z) {
+      return false;
+    }
+    return true;
+  };
+
+  inline bool intersects(vec3 min_, vec3 max_) const {
+    if (min.x > max_.x || max.x < min_.x || min.y > max_.y || max.y < min_.y || min.z > max_.z ||
+        max.z < min_.z) {
+      return false;
+    }
+    return true;
+  };
 };
 
 struct OctreeNode {
@@ -25,6 +41,7 @@ struct OctreeNode {
   int depth = 0;
   int numPoints = 0;
   Point points[OCTREE_CAPACITY];
+  AABB aabbs[OCTREE_CAPACITY];
 
   OctreeNode* children[OCTREE_CHILDREN];
   OctreeNode(float dimension, int d = 0);
@@ -41,6 +58,7 @@ public:
   ~Octree();
 
   void insert(const vec3& point, int pointIndex);
+  void insert(const vec3& min, const vec3& max, int aabbIndex);
 
   void clear();
 

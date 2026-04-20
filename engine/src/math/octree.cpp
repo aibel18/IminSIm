@@ -77,6 +77,62 @@ void insertOctree(OctreeNode* node, const vec3& point, int pointIndex) {
   insertOctree(node->children[childIdx], point, pointIndex);
 }
 
+void insertOctree(OctreeNode* node, const vec3& min, const vec3& max, int pointIndex) {
+
+  if (!node->isDivided) {
+
+    // If there is space in this node, add the point here
+    if (node->numPoints < OCTREE_CAPACITY) {
+      node->aabbs[node->numPoints].index = pointIndex;
+      node->aabbs[node->numPoints].min = min;
+      node->aabbs[node->numPoints].max = max;
+      node->numPoints++;
+      return;
+    }
+
+    // If at max depth, consider as outlier and do not insert
+    if (node->depth + 1 > OCTREE_MAX_DEPTH) {
+      outlierPoints++;
+      return;
+    }
+
+    // Create children nodes and cache midpoint
+    for (int i = 0; i < OCTREE_CHILDREN; ++i) {
+      node->children[i] = new OctreeNode(
+          {(i & 1) ? node->midPoint.x : node->minBound.x, (i & 2) ? node->midPoint.y : node->minBound.y,
+           (i & 4) ? node->midPoint.z : node->minBound.z},
+          {(i & 1) ? node->maxBound.x : node->midPoint.x, (i & 2) ? node->maxBound.y : node->midPoint.y,
+           (i & 4) ? node->maxBound.z : node->midPoint.z},
+          node->depth + 1);
+    }
+    node->isDivided = true;
+
+    // Redistribute all existing points into children
+    for (int i = 0; i < node->numPoints; ++i) {
+      const AABB& aabb = node->aabbs[i];
+      for (int i = 0; i < OCTREE_CHILDREN; ++i) {
+        if (aabb.intersects(node->children[i]->minBound, node->children[i]->maxBound)) {
+          insertOctree(node->children[i], aabb.min, aabb.max, aabb.index);
+        }
+      }
+    }
+    node->numPoints = 0;
+  }
+
+  // Insert the new point into the appropriate child
+  // int childIdx = getChildIndex(point, node->midPoint);
+  // insertOctree(node->children[childIdx], point, pointIndex);
+  AABB aabb;
+  aabb.index = pointIndex;
+  aabb.min = min;
+  aabb.max = max;
+  for (int i = 0; i < OCTREE_CHILDREN; ++i) {
+    if (aabb.intersects(node->children[i]->minBound, node->children[i]->maxBound)) {
+      insertOctree(node->children[i], aabb.min, aabb.max, aabb.index);
+    }
+  }
+}
+
 void queryOctree(const OctreeNode* node, const vec3& minBound, const vec3& maxBound,
                  std::vector<int>& results) {
 
@@ -220,6 +276,10 @@ Octree::~Octree() {
 
 void Octree::insert(const vec3& point, int pointIndex) {
   insertOctree(root, point, pointIndex);
+}
+
+void Octree::insert(const vec3& min, const vec3& max, int pointIndex) {
+  insertOctree(root, min, max, pointIndex);
 }
 
 // void Octree::insertBatch(const vec3* points, const int* indices, size_t count) {
