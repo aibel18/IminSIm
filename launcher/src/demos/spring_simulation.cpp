@@ -88,7 +88,11 @@ void SpringSimulation::update() {
       totMove = totMove + weigths[i][k] * (m.in_particle[weigthsIds[i][k]].position + distances[i][k]);
     }
     stackLine2.point(i) = totMove;
-    octree.insert(totMove, i);
+
+    vec3 min = totMove - vec3{0.01, 0.01, 0.01};
+    vec3 max = totMove + vec3{0.01, 0.01, 0.01};
+    octree.insert(min, max, i);
+    // octree.insert(totMove, i);
   }
   octree.numElements();
   stackLine2.update();
